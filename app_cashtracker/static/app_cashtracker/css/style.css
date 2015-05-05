@@ -1,0 +1,91 @@
+/* CSS - Cascading Style Sheet */
+/* Palette color codes */
+/* Palette URL: http://paletton.com/#uid=12o1c0krFnVmemKnUrvD2oQJLCQ */
+
+/* Feel free to copy&paste color codes to your application */
+
+
+/* As hex codes */
+
+.color-primary-0 { color: #7AB118 } /* Main Primary color */
+.color-primary-1 { color: #7FA833 }
+.color-primary-2 { color: #95CB33 }
+.color-primary-3 { color: #76B800 }
+.color-primary-4 { color: #9BF100 }
+
+body {
+/*    width: 540px;
+    height: 960px;*/
+    background: #ffffff;
+    color: #000000;
+}
+
+.main-logo {
+    width: 100%;
+}
+
+.no-margins {
+    margin: 0;
+}
+
+#header {
+    /*background: #7AB118;*/
+}
+
+#footer {
+  color: #7FA833;
+  background: #9BF100;
+  border: 1px solid #7AB118;
+  position: fixed;
+  bottom: 0;
+  right: 0%;
+}
+
+#content {
+    padding: 10%;
+}
+
+
+.action-button {
+  background: #9BF100;
+  color: black;
+  border: 1px solid #7ab118;
+  font-weight: bold;
+}
+
+.action-button:hover {
+    background: #7AB118;
+    color: #9BF100;
+}
+
+.action-button.clicked {
+    background: #7AB118;
+    color: #9BF100;
+}
+
+i {
+    background: #7AB118;
+}
+
+a {
+    background: transparent;
+    color: #7FA833;
+}
+
+label.general-label{
+    color: #7FA833;
+}
+
+label #header {
+    color: #000000;
+}
+
+input {
+    border: 1px solid #7ab118 !important;
+    background-color: rgb(250, 255, 189) !important;
+}
+
+.center-text{
+    text-align: center;
+}
+
