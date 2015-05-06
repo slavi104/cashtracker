@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Register - CashTracker{% endblock %}
+{% block content %}
+    <form class="register-form">
+      <div class="form-group">
+        <label for="inputEmail3" class="col-sm-12 control-label general-label login-label">Email:</label>
+        <div class="col-sm-12">
+          <input type="email" class="form-control login-inputs" id="inputEmail3" placeholder="Email">
+        </div>
+      </div>
+      <br>
+      <br>
+      <div class="form-group">
+        <label for="inputPassword3" class="col-sm-12 control-label general-label login-label">Password:</label>
+        <div class="col-sm-12">
+          <input type="password" class="form-control login-inputs" id="inputPassword3" placeholder="Password">
+        </div>
+      </div>
+      <br>
+      <br>
+      <div class="form-group">
+        <label for="inputPassword3" class="col-sm-12 control-label general-label login-label">Repeat Password:</label>
+        <div class="col-sm-12">
+          <input type="password" class="form-control login-inputs" id="inputRepPassword3" placeholder="Password">
+        </div>
+      </div>
+      <br>
+      <br>
+      <div class="form-group">
+        <div class="col-sm-12">
+          <div class="row-fluid">
+            <span class="span5">
+              <button type="submit" class="btn btn-default action-button action-button-max-width">SIGN UP</button>
+            </span>
+            <span class="span2 center-text">
+              <label class="general-label login-label">or</label>
+            </span>
+            <span class="span5">
+              <a href="/app_cashtracker/login" class="btn btn-default action-button action-button-max-width">SIGN IN</a>
+            </span>
+          </div>
+        </div>
+      </div>
+    </form>
+{% endblock %}

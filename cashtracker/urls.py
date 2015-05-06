@@ -6,6 +6,8 @@ urlpatterns = [
     # url(r'^$', 'cashtracker.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
+    #url(r'^login/', include('app_cashtracker.urls')),
+    url(r'^app_cashtracker/', include('app_cashtracker.urls')),
     url(r'^$', include('app_cashtracker.urls')),
     url(r'^admin/', include(admin.site.urls)),
 ]
