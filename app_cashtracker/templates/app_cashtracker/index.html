@@ -12,36 +12,36 @@
 {% else %}
     <p>No users are available.</p>
 {% endif %} -->
-    <form class="form-horizontal">
+    <form class="">
       <div class="form-group">
-        <label for="inputEmail3" class="col-sm-2 control-label general-label">Email:</label>
-        <div class="col-sm-10">
-          <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+        <label for="inputEmail3" class="col-sm-12 control-label general-label login-label">Email:</label>
+        <div class="col-sm-12">
+          <input type="email" class="form-control login-inputs" id="inputEmail3" placeholder="Email">
         </div>
       </div>
       <div class="form-group">
-        <label for="inputPassword3" class="col-sm-2 control-label general-label">Password:</label>
-        <div class="col-sm-10">
-          <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+        <label for="inputPassword3" class="col-sm-12 control-label general-label login-label">Password:</label>
+        <div class="col-sm-12">
+          <input type="password" class="form-control login-inputs" id="inputPassword3" placeholder="Password">
         </div>
       </div>
       <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
+        <div class="col-sm-12">
           <div class="checkbox">
-            <label class="general-label">
-              <input type="checkbox"> Remember me
+            <label class="general-label login-label remember-me-container">
+              <input class="checkbox-general" type="checkbox">&nbsp; Remember me
             </label>
           </div>
         </div>
       </div>
       <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
+        <div class="col-sm-12">
           <div class="row-fluid">
             <span class="span5">
               <button type="submit" class="btn btn-default action-button action-button-max-width">SIGN IN</button>
             </span>
             <span class="span2 center-text">
-              <label class="general-label">or</label>
+              <label class="general-label login-label">or</label>
             </span>
             <span class="span5">
               <button type="submit" class="btn btn-default action-button action-button-max-width">SIGN UP</button>

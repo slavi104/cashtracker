@@ -63,20 +63,23 @@ body {
 }
 
 #content {
-    padding: 5%;
-    position: fixed;
-    top: 9%;
-    padding-right: 12%;
-    padding-top: 10%;
-    width: 100%;
+  padding: 5%;
+  position: relative;
+  padding-top: 10%;
+  width: 100%;
+  max-height: 83%;
+  overflow-y: auto;
+  padding-bottom: 10%;
 }
 
 
 .action-button {
-  background: #9BF100;
-  color: black;
-  border: 1px solid #7ab118;
+  background: #95CB33;
+  color: #000000;
+  border: 3px solid #9BF100;
   font-weight: bold;
+  border-radius: 30px;
+  opacity: 0.8;
 }
 
 .action-button:hover {
@@ -100,6 +103,7 @@ a {
 
 label.general-label{
     color: #7FA833;
+    width: 100%;
 }
 
 label #header {
@@ -122,7 +126,27 @@ input {
 
 .action-button-max-width {
   width: 100%;
-  font-size: 1em;
+  font-size: 2.5em;
   padding: 3%;
 }
 
+.login-inputs {
+  font-size: 3em;
+  line-height: 20%;
+  height: 30%;
+  border-radius: 15px;
+}
+
+.login-label {
+  font-size: 2.5em;
+}
+
+.remember-me-container {
+  font-size: 2em;
+}
+
+.checkbox-general{
+  width: 30px;
+  height: 85%;
+  margin-top: -1px;
+}
