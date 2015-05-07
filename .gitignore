@@ -1,4 +1,7 @@
 # Byte-compiled / optimized / DLL files
+app_cashtracker/__pycache__/
+app_cashtracker/migrations/__pycache__/
+cashtracker/__pycache__/
 __pycache__/
 *.py[cod]
 *$py.class
