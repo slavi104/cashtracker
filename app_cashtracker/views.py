@@ -95,24 +95,40 @@ def register_action(request):
         return HttpResponseRedirect(reverse('app_cashtracker:home'))
 
     params = request.POST
-    if params['password_1'] == params['password_2']:
-        user = User()
-        user.register(params)
-        return HttpResponseRedirect(reverse('app_cashtracker:login'))
 
+    try:
+        user = get_object_or_404(User, email=params['email'])
+        existing_user = True
+    except Exception:
+        existing_user = False
+
+    if params['password_1'] == params['password_2']:
+        not_equal_passwords = False
+        if not existing_user:
+            user = User()
+            user.register(params)
+            return HttpResponseRedirect(reverse('app_cashtracker:login'))
     else:
-        context = RequestContext(request, {
-            'errors': {
-                'not_equal_passwords': True
-            },
-        })
-        template = loader.get_template('app_cashtracker/register.html')
-        return HttpResponse(template.render(context))
+        not_equal_passwords = True
+
+    context = RequestContext(request, {
+        'errors': {
+            'not_equal_passwords': not_equal_passwords,
+            'existing_user': existing_user
+        },
+    })
+    
+    template = loader.get_template('app_cashtracker/register.html')
+    return HttpResponse(template.render(context))
     
 
 def home(request):
+
     user_id = request.session.get('user_id', False)
-    print(user_id)
+
+    if not user_id:
+        return HttpResponseRedirect(reverse('app_cashtracker:login'))
+
     context = RequestContext(request, {
         'user': get_object_or_404(User, id=user_id),
     })

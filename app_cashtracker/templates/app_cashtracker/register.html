@@ -43,7 +43,9 @@
         </div>
       </div>
     </form>
-{% if errors.not_equal_passwords %}
+{% if errors.existing_user %}
+  <script>alert("User with this email already exist!");</script>
+{% elif errors.not_equal_passwords %}
   <script>alert("Passwords are not equal!");</script>
 {% endif %}
 {% endblock %}
