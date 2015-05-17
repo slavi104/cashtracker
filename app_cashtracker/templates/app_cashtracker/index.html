@@ -16,7 +16,8 @@
   $(document).ready(function(){
     //alert(window.location);
     //if () {};
-    window.location = "app_cashtracker/login";
+    var newURL = window.location.protocol + "//" + window.location.host + "/" + "app_cashtracker/login";
+    window.location = newURL;
   });
 </script>
 {% endblock %}

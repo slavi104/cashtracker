@@ -1,5 +1,12 @@
 from django.db import models
 
+# date and time
+from datetime import datetime
+
+# for password hashing
+import uuid
+import hashlib
+ 
 # Create your models here.
 # USER
 class User(models.Model):
@@ -11,6 +18,21 @@ class User(models.Model):
     salary = models.FloatField(default=0.00)
     created = models.DateTimeField('date created')
     is_active = models.IntegerField(default=1)
+
+    def register(self, params):
+        self.email = params['email']
+        self.password = User.hash_password(params['password_1'])
+        self.created = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        self.save()
+
+    def hash_password(password):
+        # uuid is used to generate a random number
+        salt = uuid.uuid4().hex
+        return hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
+        
+    def check_password(hashed_password, user_password):
+        password, salt = hashed_password.split(':')
+        return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
 
     def __str__(self):
         return self.user_name
