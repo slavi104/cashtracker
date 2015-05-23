@@ -108,7 +108,8 @@ def register_action(request):
         if not existing_user:
             user = User()
             user.register(params)
-            return HttpResponseRedirect(reverse('app_cashtracker:login'))
+            request.session['user_id'] = user.id
+            return HttpResponseRedirect(reverse('app_cashtracker:edit_profile'))
     else:
         not_equal_passwords = True
 
