@@ -119,6 +119,16 @@ input {
     background-color: rgb(250, 255, 189) !important;
 }
 
+select {
+    border: 1px solid #7ab118 !important;
+    background-color: rgb(250, 255, 189) !important;
+}
+
+textarea {
+    border: 1px solid #7ab118 !important;
+    background-color: rgb(250, 255, 189) !important;
+}
+
 .center-text{
     text-align: center;
 }
@@ -180,7 +190,6 @@ div#settings_menu {
   border-right: 1px solid #7AB118;
   font-size: 200%;
   top: 0%;
-  opacity: 0.7;
   padding: 4%;
   padding-top: 9%;
 }

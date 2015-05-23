@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 
 # models
 from .models import User
+from .models import Category
 
 def index(request):
     # users = User.objects.order_by('-id')
@@ -131,6 +132,7 @@ def home(request):
 
     context = RequestContext(request, {
         'logged_user': get_object_or_404(User, id=user_id),
+        'categories': Category.objects.filter(user_id=user_id)
     })
     template = loader.get_template('app_cashtracker/home.html')
     return HttpResponse(template.render(context))
