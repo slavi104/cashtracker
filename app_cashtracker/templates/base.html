@@ -34,11 +34,10 @@
             {{ logged_user.first_name }} {{ logged_user.last_name }}
         </div>
         <div id="app_settings">
-            <div class="settings_menu_button" id="settings_categories">Categories</div>
-            <div class="settings_menu_button" id="settings_edit_profile">Edit profile</div>
-            <div class="settings_menu_button" id="settings_pdf">PDF settings</div>
-            <div class="settings_menu_button" id="settings_logout"></div>
-            <a style="text-decoration: none; color: #000;" href="/app_cashtracker/logout"><div class="settings_menu_button" id="settings_logout">Logout</div></a>
+            <a class="settings_menu_button" href="/app_cashtracker/edit_categories">Categories</a>
+            <a class="settings_menu_button" href="/app_cashtracker/edit_profile">Edit profile</a>
+            <a class="settings_menu_button" href="/app_cashtracker/pdf_settings">PDF settings</a>
+            <a class="settings_menu_button" href="/app_cashtracker/logout">Logout</a>
         </div>
     </div>
     {% endif %}

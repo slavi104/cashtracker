@@ -16,6 +16,7 @@ class User(models.Model):
     first_name = models.CharField(max_length=255, default='')
     last_name = models.CharField(max_length=255, default='')
     salary = models.FloatField(default=0.00)
+    currency = models.CharField(max_length=255, default="BGN")
     created = models.DateTimeField('date created')
     is_active = models.IntegerField(default=1)
 

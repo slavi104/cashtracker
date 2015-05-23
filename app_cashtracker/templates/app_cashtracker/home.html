@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}CashTracker{% endblock %}
+{% block title %}Home - CashTracker{% endblock %}
 {% block content %}
 <form class="login-form"  action="/app_cashtracker/add_payment/" method="post">
   {% csrf_token %}
@@ -29,7 +29,7 @@
   <div class="form-group">
     <div class="col-sm-12">
       <div class="row-fluid">
-        <span class="span5">
+        <span class="span12">
           <button type="submit" class="btn btn-default action-button action-button-max-width">Add payment</button>
         </span>
       </div>

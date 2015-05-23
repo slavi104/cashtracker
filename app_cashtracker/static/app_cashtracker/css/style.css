@@ -210,6 +210,9 @@ div#user_settings_info {
   padding: 1%;
   font-weight: 600;
   cursor: pointer;
+  text-decoration: none;
+  color: #000;
+  display: block;
 }
 
 span#menu_button_holder {
@@ -219,4 +222,9 @@ span#menu_button_holder {
   z-index: 1001;
   width: 96%;
   padding: 1%;
+}
+
+.space {
+  margin: 5%;
+  padding: 7%;
 }

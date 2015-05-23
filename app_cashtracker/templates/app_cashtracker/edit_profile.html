@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Edit profile - CashTracker{% endblock %}
+{% block content %}
+<form class="login-form"  action="/app_cashtracker/edit_profile_action/" method="post">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="inputEmail3" class="col-sm-12 control-label general-label login-label">First name:</label>
+    <div class="col-sm-12">
+      <input value="{{ logged_user.first_name }}" name="first_name" type="text" class="form-control login-inputs" id="payment_input" placeholder="First name">
+    </div>
+  </div>
+  <br>
+  <br>
+  <div class="form-group">
+    <label for="inputEmail3" class="col-sm-12 control-label general-label login-label">Last name:</label>
+    <div class="col-sm-12">
+      <input value="{{ logged_user.last_name }}" name="last_name" type="text" class="form-control login-inputs" id="payment_input" placeholder="Last name">
+    </div>
+  </div>
+  <br>
+  <br>
+  <div class="form-group">
+    <label for="inputEmail3" class="col-sm-12 control-label general-label login-label">New Password:</label>
+    <div class="col-sm-12">
+      <input name="password_1" type="password" class="form-control login-inputs" id="payment_input" placeholder="Password">
+    </div>
+  </div>
+  <br>
+  <br>
+  <div class="form-group">
+    <label for="inputEmail3" class="col-sm-12 control-label general-label login-label">Repeat password:</label>
+    <div class="col-sm-12">
+      <input name="password_2" type="password" class="form-control login-inputs" id="payment_input" placeholder="Repeat password">
+    </div>
+  </div>
+  <br>
+  <br>
+  <div class="form-group">
+    <label for="inputEmail3" class="col-sm-12 control-label general-label login-label">Salary:</label>
+    <div class="col-sm-12">
+      <input value="{{ logged_user.salary }}" name="salary" type="decimal" class="form-control login-inputs" id="payment_input" placeholder="Salary">
+    </div>
+  </div>
+  <br>
+  <br>
+  <div class="Currency">
+    <label for="inputEmail3" class="col-sm-12 control-label general-label login-label">Currency:</label>
+    <div class="col-sm-12">
+      <select id="currency" name="currency" placeholder="Category" class="form-control login-inputs">
+        <optgroup label="most used"><option value="BGN" data-symbol="BGN">Bulgarian Lev</option><option value="USD" data-symbol="$">US Dollar</option><option value="EUR" data-symbol="€">Euro</option><option value="JPY" data-symbol="¥">Yen</option><option value="GBP" data-symbol="£">Pound Sterling</option><option value="CHF" data-symbol="CHF">Swiss Franc</option><option value="CAD" data-symbol="CAD">Canadian Dollar</option><option value="AUD" data-symbol="$">Australian Dollar</option><option value="RSD" data-symbol="RSD">Serbian Dinar</option></optgroup>
+        <optgroup label="other"><option value="AFN" data-symbol="AFN">Afghani</option><option value="ALL" data-symbol="ALL">Lek</option><option value="DZD" data-symbol="DZD">Algerian Dinar</option><option value="AOA" data-symbol="AOA">Kwanza</option><option value="XCD" data-symbol="$">East Caribbean Dollar</option><option value="ARA" data-symbol="ARA">Argentine austral</option><option value="ARS" data-symbol="ARS">Argentine Peso</option><option value="AMD" data-symbol="AMD">Armenian Dram</option><option value="AWG" data-symbol="AWG">Aruban Guilder</option><option value="AZN" data-symbol="AZN">Azerbaijanian Manat</option><option value="BSD" data-symbol="BSD">Bahamian Dollar</option><option value="BHD" data-symbol="BHD">Bahraini Dinar</option><option value="BDT" data-symbol="BDT">Taka</option><option value="BBD" data-symbol="BBD">Barbados Dollar</option><option value="BYR" data-symbol="BYR">Belarussian Ruble</option><option value="BZD" data-symbol="BZD">Belize Dollar</option><option value="XOF" data-symbol="CFA">CFA Franc BCEAO</option><option value="BMD" data-symbol="BMD">Bermudian Dollar</option><option value="INR" data-symbol="₹">Indian Rupee</option><option value="BTN" data-symbol="BTN">Ngultrum</option><option value="BOB" data-symbol="BOB">Boliviano</option><option value="BAM" data-symbol="BAM">Convertible Marks</option><option value="BWP" data-symbol="BWP">Pula</option><option value="NOK" data-symbol="NOK">Norwegian Krone</option><option value="BRL" data-symbol="$">Brazilian Real</option><option value="BND" data-symbol="BND">Brunei Dollar</option><option value="BIF" data-symbol="BIF">Burundi Franc</option><option value="KHR" data-symbol="KHR">Riel</option><option value="XAF" data-symbol="FCFA">CFA Franc BEAC</option><option value="CVE" data-symbol="CVE">Cape Verde Escudo</option><option value="KYD" data-symbol="KYD">Cayman Islands Dollar</option><option value="CLP" data-symbol="CLP">Chilean Peso</option><option value="CNY" data-symbol="¥">Yuan Renminbi</option><option value="COP" data-symbol="COP">Colombian Peso</option><option value="KMF" data-symbol="KMF">Comoro Franc</option><option value="CDF" data-symbol="CDF">Franc Congolais</option><option value="NZD" data-symbol="$">New Zealand Dollar</option><option value="CRC" data-symbol="CRC">Costa Rican Colon</option><option value="HRK" data-symbol="HRK">Croatian Kuna</option><option value="CUP" data-symbol="CUP">Cuban Peso</option><option value="CZK" data-symbol="CZK">Czech Koruna</option><option value="DKK" data-symbol="DKK">Danish Krone</option><option value="DJF" data-symbol="DJF">Djibouti Franc</option><option value="DOP" data-symbol="DOP">Dominican Peso</option><option value="EGP" data-symbol="EGP">Egyptian Pound</option><option value="ERN" data-symbol="ERN">Nakfa</option><option value="ETB" data-symbol="ETB">Ethiopian Birr</option><option value="FKP" data-symbol="FKP">Falkland Island Pound</option><option value="FJD" data-symbol="FJD">Fiji Dollar</option><option value="XPF" data-symbol="CFPF">CFP Franc</option><option value="GMD" data-symbol="GMD">Dalasi</option><option value="GEL" data-symbol="GEL">Lari</option><option value="GHS" data-symbol="GHS">Ghana Cedi</option><option value="GIP" data-symbol="GIP">Gibraltar Pound</option><option value="GTQ" data-symbol="GTQ">Quetzal</option><option value="GNF" data-symbol="GNF">Guinea Franc</option><option value="GYD" data-symbol="GYD">Guyana Dollar</option><option value="HTG" data-symbol="HTG">Gourde</option><option value="HNL" data-symbol="HNL">Lempira</option><option value="HKD" data-symbol="$">Hong Kong Dollar</option><option value="HUF" data-symbol="HUF">Forint</option><option value="ISK" data-symbol="ISK">Iceland Krona</option><option value="IDR" data-symbol="IDR">Rupiah</option><option value="IRR" data-symbol="IRR">Iranian Rial</option><option value="IQD" data-symbol="IQD">Iraqi Dinar</option><option value="ILS" data-symbol="₪">New Israeli Sheqel</option><option value="JMD" data-symbol="JMD">Jamaican Dollar</option><option value="JOD" data-symbol="JOD">Jordanian Dinar</option><option value="KZT" data-symbol="KZT">Tenge</option><option value="KES" data-symbol="KES">Kenyan Shilling</option><option value="KPW" data-symbol="KPW">North Korean Won</option><option value="KRW" data-symbol="₩">Won</option><option value="KWD" data-symbol="KWD">Kuwaiti Dinar</option><option value="KGS" data-symbol="KGS">Som</option><option value="LAK" data-symbol="LAK">Kip</option><option value="LBP" data-symbol="LBP">Lebanese Pound</option><option value="LSL" data-symbol="LSL">Loti</option><option value="ZAR" data-symbol="ZAR">Rand</option><option value="LRD" data-symbol="LRD">Liberian Dollar</option><option value="LYD" data-symbol="LYD">Libyan Dinar</option><option value="MOP" data-symbol="MOP">Pataca</option><option value="MKD" data-symbol="MKD">Denar</option><option value="MGA" data-symbol="MGA">Malagasy Ariary</option><option value="MWK" data-symbol="MWK">Kwacha</option><option value="MYR" data-symbol="MYR">Malaysian Ringgit</option><option value="MVR" data-symbol="MVR">Rufiyaa</option><option value="MRO" data-symbol="MRO">Ouguiya</option><option value="MUR" data-symbol="MUR">Mauritius Rupee</option><option value="MXN" data-symbol="$">Mexican Peso</option><option value="MDL" data-symbol="MDL">Moldovan Leu</option><option value="MNT" data-symbol="MNT">Tugrik</option><option value="MAD" data-symbol="MAD">Moroccan Dirham</option><option value="MZN" data-symbol="MZN">Metical</option><option value="MMK" data-symbol="MMK">Kyat</option><option value="NAD" data-symbol="NAD">Namibia Dollar</option><option value="NPR" data-symbol="NPR">Nepalese Rupee</option><option value="ANG" data-symbol="ANG">Netherlands Antillian Guilder</option><option value="NIO" data-symbol="NIO">Cordoba Oro</option><option value="NGN" data-symbol="NGN">Naira</option><option value="OMR" data-symbol="OMR">Rial Omani</option><option value="PKR" data-symbol="PKR">Pakistan Rupee</option><option value="PAB" data-symbol="PAB">Balboa</option><option value="PGK" data-symbol="PGK">Kina</option><option value="PYG" data-symbol="PYG">Guarani</option><option value="PEN" data-symbol="PEN">Nuevo Sol</option><option value="PHP" data-symbol="PHP">Philippine Peso</option><option value="PLN" data-symbol="PLN">Zloty</option><option value="QAR" data-symbol="QAR">Qatari Rial</option><option value="RON" data-symbol="RON">New Leu</option><option value="RUB" data-symbol="RUB">Russian Ruble</option><option value="RWF" data-symbol="RWF">Rwanda Franc</option><option value="SHP" data-symbol="SHP">Saint Helena Pound</option><option value="WST" data-symbol="WST">Tala</option><option value="STD" data-symbol="STD">Dobra</option><option value="SAR" data-symbol="SAR">Saudi Riyal</option><option value="RSD" data-symbol="RSD">Serbian Dinar</option><option value="SCR" data-symbol="SCR">Seychelles Rupee</option><option value="SLL" data-symbol="SLL">Leone</option><option value="SGD" data-symbol="SGD">Singapore Dollar</option><option value="SBD" data-symbol="SBD">Solomon Islands Dollar</option><option value="SOS" data-symbol="SOS">Somali Shilling</option><option value="LKR" data-symbol="LKR">Sri Lanka Rupee</option><option value="SDG" data-symbol="SDG">Sudanese Pound</option><option value="SRD" data-symbol="SRD">Surinam Dollar</option><option value="SZL" data-symbol="SZL">Lilangeni</option><option value="SEK" data-symbol="SEK">Swedish Krona</option><option value="SYP" data-symbol="SYP">Syrian Pound</option><option value="TWD" data-symbol="$">New Taiwan Dollar</option><option value="TJS" data-symbol="TJS">Somoni</option><option value="TZS" data-symbol="TZS">Tanzanian Shilling</option><option value="THB" data-symbol="฿">Baht</option><option value="TOP" data-symbol="TOP">Paanga</option><option value="TTD" data-symbol="TTD">Trinidata and Tobago Dollar</option><option value="TND" data-symbol="TND">Tunisian Dinar</option><option value="TRY" data-symbol="TRY">New Turkish Lira</option><option value="UGX" data-symbol="UGX">Uganda Shilling</option><option value="UAH" data-symbol="UAH">Hryvnia</option><option value="UYU" data-symbol="UYU">Peso Uruguayo</option><option value="UZS" data-symbol="UZS">Uzbekistan Sum</option><option value="VUV" data-symbol="VUV">Vatu</option><option value="VEF" data-symbol="VEF">Bolivar Fuerte</option><option value="VND" data-symbol="₫">Dong</option><option value="YER" data-symbol="YER">Yemeni Rial</option><option value="AED" data-symbol="AED">UAE Dirham</option><option value="LVL" data-symbol="LVL">Latvian Lats</option><option value="LTL" data-symbol="LTL">Lithuanian Litas</option><option value="CLF" data-symbol="CLF">Unidades de fomento</option><option value="IEP" data-symbol="IEP">Irish Pound (Punt in Irish language)</option><option value="SVC" data-symbol="SVC">Salvadoran colón</option><option value="ZMK" data-symbol="ZMK">Kwacha</option></optgroup>
+      </select>
+    </div>
+  </div>
+  <div class="space"></div>
+  <div class="form-group">
+    <div class="col-sm-12">
+      <div class="row-fluid">
+        <span class="span12">
+          <button type="submit" class="btn btn-default action-button action-button-max-width">Save</button>
+        </span>
+      </div>
+    </div>
+  </div>
+</form>
+<script type="text/javascript">
+$(document).ready(function(){
+  $('#currency').val("{{ logged_user.currency }}");
+});
+</script>
+{% endblock %}
