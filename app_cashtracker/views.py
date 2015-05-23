@@ -130,7 +130,7 @@ def home(request):
         return HttpResponseRedirect(reverse('app_cashtracker:login'))
 
     context = RequestContext(request, {
-        'user': get_object_or_404(User, id=user_id),
+        'logged_user': get_object_or_404(User, id=user_id),
     })
     template = loader.get_template('app_cashtracker/home.html')
     return HttpResponse(template.render(context))
