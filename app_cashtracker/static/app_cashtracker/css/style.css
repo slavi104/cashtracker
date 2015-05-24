@@ -276,3 +276,17 @@ span.one-row-two-buttons {
   padding: 5px;
   cursor: pointer;
 }
+
+.add-new-button-holder{
+  float: right;
+  margin-top: 4%;
+}
+
+.delete_button {
+  width: 13%;
+  cursor: pointer;
+}
+
+.subcategory-label {
+  width: 85% !important;
+}
