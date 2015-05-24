@@ -3,6 +3,8 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
+    url(r'^edit_categories/', views.edit_categories, name='edit_categories'),
+    url(r'^edit_categories_action/', views.edit_categories_action, name='edit_categories_action'),
     url(r'^edit_profile/', views.edit_profile, name='edit_profile'),
     url(r'^edit_profile_action/', views.edit_profile_action, name='edit_profile_action'),
     url(r'^login/', views.login, name='login'),

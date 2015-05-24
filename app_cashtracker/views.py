@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 # models
 from .models import User
 from .models import Category
+from .models import Subcategory
 
 def index(request):
     # users = User.objects.order_by('-id')
@@ -193,4 +194,54 @@ def edit_profile_action(request):
     })
     
     template = loader.get_template('app_cashtracker/edit_profile.html')
+    return HttpResponse(template.render(context))
+
+
+def edit_categories(request):
+
+    user_id = request.session.get('user_id', False)
+    categories = Category.objects.filter(user_id=user_id)
+    subcategories = {}
+
+    for category in categories:
+        category.subcategories = Subcategory.objects.filter(category_id=category.id)
+
+    if not user_id:
+        return HttpResponseRedirect(reverse('app_cashtracker:login'))
+
+    context = RequestContext(request, {
+        'logged_user': get_object_or_404(User, id=user_id),
+        'categories': categories
+    })
+
+    print(categories)
+    print(subcategories)
+
+    template = loader.get_template('app_cashtracker/edit_categories.html')
+    return HttpResponse(template.render(context))
+
+
+def edit_categories_action(request):
+
+    user_id = request.session.get('user_id', False)
+    params = request.POST
+    other_error = False
+
+    if not user_id:
+        return HttpResponseRedirect(reverse('app_cashtracker:login'))
+
+    try:
+        user = get_object_or_404(User, id=user_id)
+    except Exception:
+        other_error = True
+        print('Error in editing profile')
+
+    context = RequestContext(request, {
+        'errors': {
+            'other_error': other_error
+        },
+        'logged_user': get_object_or_404(User, id=user_id)
+    })
+    
+    template = loader.get_template('app_cashtracker/edit_categories.html')
     return HttpResponse(template.render(context))

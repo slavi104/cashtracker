@@ -22,6 +22,9 @@
     <span id='menu_button_holder'>
         <img id="menu_button" data-showed_menu="0" src="{% static 'app_cashtracker/images/menu.png' %}">
     </span>
+    <span id='home_button_holder'>
+        <label>HOME</label>
+    </span>
     {% endif %}
     <div class="row-fluid no-margins" id="header">
         <div class="logo-container">
@@ -55,6 +58,10 @@
 <script language="javascript" type="text/javascript">
 $(document).ready(function(){
     App.settingsScript();
+    $('#home_button_holder').on('click', function(){
+        var newURL = window.location.protocol + "//" + window.location.host + "/" + "app_cashtracker/home";
+        window.location = newURL;
+    });
 });
 </script>
 </body>
