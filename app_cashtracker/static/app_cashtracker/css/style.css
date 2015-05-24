@@ -256,16 +256,23 @@ span.one-row-two-buttons {
   font-size: 5em;
 }
 
-span#home_button_holder {
+#home_button_holder {
   position: absolute;
-  right: 1%;
-  top: 1%;
-  color: white;
-  z-index: 10000;
-  border: 4px solid;
-  padding-top: 5px;
-  padding-bottom: 0px;
-  padding-left: 10px;
-  padding-right: 10px;
-  font-size: 1.4em;
+  top: 0;
+  height: 10%;
+  z-index: 1001;
+  width: 76%;
+  padding: 1%;
+  text-align: right;
+  right: 0;
+  padding-right: 8.5%;
+}
+
+#home_button {
+  width: 10%;
+  position: absolute;
+  border: 3px solid #fff;
+  border-radius: 5px;
+  padding: 5px;
+  cursor: pointer;
 }
