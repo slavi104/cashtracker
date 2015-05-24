@@ -24,6 +24,7 @@ App.categoryAddEdit = function() {
         $('.delete_button').last().on('click', function(){
             $(this).parent().parent().parent().remove();
         });
+        $('.subcategory-name-input').last().attr('name', 'new_' + step_category_counter);
     });
 
     $('.delete_button').on('click', function(){

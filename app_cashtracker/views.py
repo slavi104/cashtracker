@@ -214,9 +214,6 @@ def edit_categories(request):
         'categories': categories
     })
 
-    print(categories)
-    print(subcategories)
-
     template = loader.get_template('app_cashtracker/edit_categories.html')
     return HttpResponse(template.render(context))
 
@@ -226,21 +223,34 @@ def add_edit_category(request, category_id=0):
     user_id = request.session.get('user_id', False)
     params = request.POST
     other_error = False
+    category = None
+    subcategories = None
 
     if not user_id:
         return HttpResponseRedirect(reverse('app_cashtracker:login'))
 
     try:
         user = get_object_or_404(User, id=user_id)
+        if int(category_id) > 0:
+            category = get_object_or_404(Category, id=category_id)
     except Exception:
         other_error = True
-        print('Error in editing profile')
+        print('Error in editing category')
+
+    if category:
+        try:
+            subcategories = Subcategory.objects.filter(category_id=category.id)
+        except Exception:
+            other_error = True
+        pass
 
     context = RequestContext(request, {
         'errors': {
             'other_error': other_error
         },
-        'logged_user': get_object_or_404(User, id=user_id)
+        'logged_user': get_object_or_404(User, id=user_id),
+        'category': category,
+        'subcategories': subcategories
     })
     
     template = loader.get_template('app_cashtracker/add_edit_category.html')
