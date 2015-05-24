@@ -2,8 +2,9 @@
 {% load staticfiles %}
 {% block title %}Add/Edit category - CashTracker{% endblock %}
 {% block content %}
-<form class="login-form"  action="/app_cashtracker/add_edit_category_action/{{ category.id }}" method="post">
+<form class="login-form" action="/app_cashtracker/add_edit_category_action/{{ category.id }}" method="post">
   {% csrf_token %}
+  <input type="hidden" value="{{ category.id }}" name="cat_id">
   <div class="form-group">
     <label class="col-sm-12 control-label general-label login-label">Category:</label>
     <div class="col-sm-12">
@@ -37,7 +38,7 @@
             </span>
           </div>
           <div class="col-sm-12">
-            <input value="{{ subcategory.name }}" name="subcategory_{{ subcategory.id }}" type="text" class="form-control login-inputs subcategory-name-input" placeholder="Name">
+            <input value="{{ subcategory.name }}" name="sub_{{ subcategory.id }}" type="text" class="form-control login-inputs subcategory-name-input" placeholder="Name">
           </div>
           <br>
         </span>
