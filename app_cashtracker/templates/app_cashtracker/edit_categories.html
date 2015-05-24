@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Edit profile - CashTracker{% endblock %}
+{% block title %}Edit categories - CashTracker{% endblock %}
 {% block content %}
 <div class="login-form">
   <div class="row-fluid">
@@ -8,7 +8,7 @@
       <label class="col-sm-12 control-label general-label login-label main-label">Categories</label>
     </span>
     <span class="one-row-two-buttons">
-      <a href="/app_cashtracker/delete_category/{{ category.id }}" class="btn btn-default action-button action-button-max-width">Add new</a>
+      <a href="/app_cashtracker/add_edit_category/0" class="btn btn-default action-button action-button-max-width">Add new</a>
     </span>
   </div>
   <hr>
@@ -27,10 +27,10 @@
             </div>
             <div class="row-fluid">
               <span class="one-row-two-buttons">
-                <a href="/app_cashtracker/edit_category/{{ category.id }}" class="btn btn-default action-button action-button-max-width">Edit</a>
+                <a href="/app_cashtracker/add_edit_category/{{ category.id }}" class="btn btn-default action-button action-button-max-width">Edit</a>
               </span>
               <span class="one-row-two-buttons">
-                <a href="/app_cashtracker/delete_category/{{ category.id }}" class="btn btn-default action-button action-button-max-width">Delete</a>
+                <a href="/app_cashtracker/delete_category_action/{{ category.id }}" class="btn btn-default action-button action-button-max-width">Delete</a>
               </span>
             </div>
           </div>
@@ -39,9 +39,4 @@
       {% endfor %}
   {% endif %}
 </div>
-<script type="text/javascript">
-$(document).ready(function(){
-  $('#currency').val("{{ logged_user.currency }}");
-});
-</script>
 {% endblock %}

@@ -221,7 +221,59 @@ def edit_categories(request):
     return HttpResponse(template.render(context))
 
 
-def edit_categories_action(request):
+def add_edit_category(request, category_id=0):
+
+    user_id = request.session.get('user_id', False)
+    params = request.POST
+    other_error = False
+
+    if not user_id:
+        return HttpResponseRedirect(reverse('app_cashtracker:login'))
+
+    try:
+        user = get_object_or_404(User, id=user_id)
+    except Exception:
+        other_error = True
+        print('Error in editing profile')
+
+    context = RequestContext(request, {
+        'errors': {
+            'other_error': other_error
+        },
+        'logged_user': get_object_or_404(User, id=user_id)
+    })
+    
+    template = loader.get_template('app_cashtracker/add_edit_category.html')
+    return HttpResponse(template.render(context))
+
+
+def add_edit_category_action(request):
+
+    user_id = request.session.get('user_id', False)
+    params = request.POST
+    other_error = False
+
+    if not user_id:
+        return HttpResponseRedirect(reverse('app_cashtracker:login'))
+
+    try:
+        user = get_object_or_404(User, id=user_id)
+    except Exception:
+        other_error = True
+        print('Error in editing profile')
+
+    context = RequestContext(request, {
+        'errors': {
+            'other_error': other_error
+        },
+        'logged_user': get_object_or_404(User, id=user_id)
+    })
+    
+    template = loader.get_template('app_cashtracker/edit_categories.html')
+    return HttpResponse(template.render(context))
+
+
+def delete_category_action(request, category_id=0):
 
     user_id = request.session.get('user_id', False)
     params = request.POST
