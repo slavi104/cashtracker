@@ -20,7 +20,7 @@
               <ul class="subcategories-container">
                 {% if category.subcategories %}
                   {% for subcategory in category.subcategories %}
-                    <li class="subcategory-li"><label class="control-label general-label">{{ subcategory.name }}</label></li>
+                    <li class="subcategory-li"><label class="control-label general-label subcategory-label-view">{{ subcategory.name }}</label></li>
                   {% endfor %}
                 {% endif %}
               </ul>

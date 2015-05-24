@@ -290,3 +290,7 @@ span.one-row-two-buttons {
 .subcategory-label {
   width: 85% !important;
 }
+
+.subcategory-label-view {
+  font-size: 1.8em;
+}
