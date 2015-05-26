@@ -31,3 +31,15 @@ App.categoryAddEdit = function() {
         $(this).parent().parent().parent().remove();
     });
 }
+
+App.homeScript = function(subcategories_json) {
+    $('#categories_select').on('change', function(){
+        var subcategories = subcategories_json[$(this).val()];
+        $('#subcategories_select').empty();
+        $.each(subcategories, function(subcategory_id, name) {
+            $('#subcategories_select').append('<option value="' + subcategory_id + '" >' + name + '</option>');
+        });
+    });
+
+    $('#categories_select').trigger('change');
+}

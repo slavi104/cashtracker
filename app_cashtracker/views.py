@@ -10,6 +10,8 @@ from .models import User
 from .models import Category
 from .models import Subcategory
 
+import json
+
 def index(request):
     # users = User.objects.order_by('-id')
     # output = ', '.join([u.first_name for u in users])
@@ -131,10 +133,21 @@ def home(request):
 
     if not user_id:
         return HttpResponseRedirect(reverse('app_cashtracker:login'))
+    categories = Category.objects.filter(user_id=user_id, is_active=1)
+    subcategories = {}
+    for category in categories:
+        subcategories[category.id] = {}
+        category_subcategories = Subcategory.objects.filter(
+            category_id=category.id, 
+            is_active=1
+        )
+        for subcategory in category_subcategories:
+            subcategories[category.id][subcategory.id] = subcategory.name
 
     context = RequestContext(request, {
         'logged_user': get_object_or_404(User, id=user_id),
-        'categories': Category.objects.filter(user_id=user_id, is_active=1)
+        'categories': categories,
+        'subcategories': json.dumps(subcategories)
     })
     template = loader.get_template('app_cashtracker/home.html')
     return HttpResponse(template.render(context))

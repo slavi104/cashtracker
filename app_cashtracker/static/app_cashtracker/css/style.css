@@ -194,7 +194,7 @@ div#settings_menu {
   position: absolute;
   width: 100%;
   z-index: 100;
-  background: #9BF100;
+  background: #76B800;
   left: 0;
   top: 100%;
   opacity: 1;
@@ -217,7 +217,7 @@ div#user_settings_info {
   border-radius: 10px;
   margin-bottom: 4%;
   text-align: center;
-  background: #95CB33;
+  background: #9BF100;
   padding: 1%;
   font-weight: 600;
   cursor: pointer;
