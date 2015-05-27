@@ -43,3 +43,7 @@ App.homeScript = function(subcategories_json) {
 
     $('#categories_select').trigger('change');
 }
+
+App.paymentsScript = function() {
+    
+}
