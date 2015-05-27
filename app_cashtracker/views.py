@@ -5,10 +5,14 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
 from django.core.urlresolvers import reverse
 
+# date and time
+from datetime import datetime
+
 # models
 from .models import User
 from .models import Category
 from .models import Subcategory
+from .models import Payment
 
 import json
 
@@ -130,11 +134,13 @@ def register_action(request):
 def home(request):
 
     user_id = request.session.get('user_id', False)
+    subcategories = {}
 
     if not user_id:
         return HttpResponseRedirect(reverse('app_cashtracker:login'))
+
     categories = Category.objects.filter(user_id=user_id, is_active=1)
-    subcategories = {}
+
     for category in categories:
         subcategories[category.id] = {}
         category_subcategories = Subcategory.objects.filter(
@@ -144,13 +150,42 @@ def home(request):
         for subcategory in category_subcategories:
             subcategories[category.id][subcategory.id] = subcategory.name
 
+    user = get_object_or_404(User, id=user_id)
     context = RequestContext(request, {
-        'logged_user': get_object_or_404(User, id=user_id),
+        'logged_user': user,
         'categories': categories,
-        'subcategories': json.dumps(subcategories)
+        'subcategories': json.dumps(subcategories),
+        'date_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'currency': user.currency
     })
+
     template = loader.get_template('app_cashtracker/home.html')
     return HttpResponse(template.render(context))
+
+
+def add_payment(request):
+    
+    user_id = request.session.get('user_id', False)
+
+    if not user_id:
+        return HttpResponseRedirect(reverse('app_cashtracker:login'))
+
+    params = request.POST
+    payment = Payment()
+    payment.value = params['value']
+    payment.currency = params['currency']
+    payment.category = params['category']
+    payment.subcategory = params['subcategory']
+    payment.date_time = params['date_time']
+    payment.name = params['name']
+    payment.comment = params['comment']
+    payment.user_id = user_id
+    payment.is_active = 1
+    payment.save()
+
+    print(request.POST)
+
+    return HttpResponseRedirect(reverse('app_cashtracker:home'))
 
 
 def edit_profile(request):
@@ -295,6 +330,7 @@ def add_edit_category_action(request):
 
     if not error:
         category.name = params['name']
+        category.description = params['description']
         category.user_id = int(user_id)
         category.save()
 

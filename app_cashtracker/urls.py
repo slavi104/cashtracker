@@ -3,6 +3,7 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
+    url(r'^add_payment/', views.add_payment, name='add_payment'),
     url(r'^add_edit_category_action/', views.add_edit_category_action, name='add_edit_category_action'),
     url(r'^delete_category_action/(?P<category_id>[0-9]+)', views.delete_category_action, name='delete_category_action'),
     url(r'^add_edit_category/(?P<category_id>[0-9]+)', views.add_edit_category, name='add_edit_category'),

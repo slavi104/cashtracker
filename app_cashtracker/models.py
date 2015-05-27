@@ -46,8 +46,8 @@ class Payment(models.Model):
     category = models.IntegerField()
     subcategory = models.IntegerField()
     date_time = models.DateTimeField('date and time created')
-    name = models.CharField(max_length=255)
-    comment = models.CharField(max_length=1000)
+    name = models.CharField(max_length=255, default="")
+    comment = models.CharField(max_length=1000, default="")
     user_id = models.IntegerField()
     is_active = models.IntegerField(default=1)
 
