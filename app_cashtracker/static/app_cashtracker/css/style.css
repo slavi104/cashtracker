@@ -294,3 +294,9 @@ span.one-row-two-buttons {
 .subcategory-label-view {
   font-size: 1.8em;
 }
+
+table#payments_table {
+  width: 100%;
+  font-size: 1.8em;
+  color: #7FA833;
+}

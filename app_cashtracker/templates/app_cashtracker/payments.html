@@ -17,19 +17,19 @@
   <br>
   <br>
   <div class="form-group">
-    <table>
+    <table id="payments_table">
       <thead>
+        <th>Date and time</th>
         <th>Category</th>
         <th>Value</th>
-        <th>Currency</th>
       </thead>
       <tbody>
         {% if payments %}
             {% for payment in payments %}
                 <tr>
+                  <td>{{ payment.date_time }}</td>
                   <td>{{ payment.category_name }}</td>
-                  <td>{{ payment.value }}</td>
-                  <td>{{ payment.currency }}</td>
+                  <td>{{ payment.value }}{{ payment.currency }}</td>
                 </tr>
             {% endfor %}
         {% endif %}
