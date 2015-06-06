@@ -1,8 +1,6 @@
-# Cashtracker
+# Cashtracker™
 
-<a href="http://www.app.cashtracker.info"><strong>Cashtracker portal link</strong></a>
-
-Mobile site(portal) for our money.
+<a href="http://www.app.cashtracker.info"><strong>Cashtracker™</strong></a> is mobile site(portal) for our money.
 
 In the site all registered user will add each of his payments into pre-defined categories of them. The strength of this application will be, that upon request by the user will generate reports based on all payments. Of reports will be daily, weekly, monthly or yearly. It can also be for all categories of payments and just determined. So user can track what spends the most and where it can reduce its costs. Site will generate PDF documents containing certain reports. These documents will be downloaded directly to the user's device.
 
