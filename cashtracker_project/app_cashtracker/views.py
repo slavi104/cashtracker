@@ -384,20 +384,35 @@ def payments(request):
     if not user_id:
         return HttpResponseRedirect(reverse('app_cashtracker:login'))
 
+    categories = Category.objects.filter(user_id=user_id, is_active=1)
+    payments_cat = params.get('category', 0)
     payments_for = params.get('payments_for', 'today')
     payments_from = take_date(payments_for)
-    payments = Payment.objects.filter(
-        user_id=user_id, 
-        is_active=1,
-        date_time__gt=payments_from.strftime('%Y-%m-%d %H:%M:%S'))
 
+    if payments_cat and payments_cat is not '0':
+        payments = Payment.objects.filter(
+            user_id=user_id, 
+            is_active=1,
+            date_time__gt=payments_from.strftime('%Y-%m-%d %H:%M:%S'),
+            category=get_object_or_404(Category, id=payments_cat)
+        )
+    else:
+        payments = Payment.objects.filter(
+            user_id=user_id, 
+            is_active=1,
+            date_time__gt=payments_from.strftime('%Y-%m-%d %H:%M:%S')
+        )
+
+    # parse date of payment to be in hours or only date in some cases
     list(map(lambda p: p.parse_date(payments_for), payments))
 
     context = RequestContext(request, {
         'logged_user': get_object_or_404(User, id=user_id),
         'date_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         'payments': payments,
-        'payments_for': payments_for
+        'payments_for': payments_for,
+        'categories': categories,
+        'payments_cat': payments_cat
     })
     
     template = loader.get_template('app_cashtracker/payments.html')
