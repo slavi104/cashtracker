@@ -40,6 +40,14 @@ class Payment(models.Model):
     user = models.ForeignKey(User)
     is_active = models.BooleanField(default=True)
 
+    def parse_date(self, payments_for):
+        if payments_for == 'today':
+            self.date_time = self.date_time.strftime('%H:%M:%S')
+        else:
+            self.date_time = self.date_time.strftime('%d/%m/%Y')
+
+        return self
+
     def __str__(self):
         return self.name
 

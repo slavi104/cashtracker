@@ -7,7 +7,6 @@ from django.core.urlresolvers import reverse
 
 # date and time
 from datetime import datetime
-from datetime import timedelta
 
 # models
 from .models import User
@@ -380,20 +379,25 @@ def delete_category_action(request, category_id=0):
 def payments(request):
 
     user_id = request.session.get('user_id', False)
+    params = request.POST
 
     if not user_id:
         return HttpResponseRedirect(reverse('app_cashtracker:login'))
 
-    yesterday = datetime.now() - timedelta(hours=24)
+    payments_for = params.get('payments_for', 'today')
+    payments_from = take_date(payments_for)
     payments = Payment.objects.filter(
         user_id=user_id, 
         is_active=1,
-        date_time__gt=yesterday.strftime('%Y-%m-%d %H:%M:%S'))
+        date_time__gt=payments_from.strftime('%Y-%m-%d %H:%M:%S'))
+
+    list(map(lambda p: p.parse_date(payments_for), payments))
 
     context = RequestContext(request, {
         'logged_user': get_object_or_404(User, id=user_id),
         'date_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-        'payments': payments
+        'payments': payments,
+        'payments_for': payments_for
     })
     
     template = loader.get_template('app_cashtracker/payments.html')

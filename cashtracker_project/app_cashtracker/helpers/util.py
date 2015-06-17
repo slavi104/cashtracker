@@ -2,6 +2,7 @@ import json
 import requests
 import os
 from datetime import datetime
+from datetime import timedelta
 
 # for password hashing
 import uuid
@@ -37,6 +38,17 @@ def hash_password(password):
 def check_password(hashed_password, user_password):
     password, salt = hashed_password.split(':')
     return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
+
+
+def take_date(srting_repr):
+    calc_functions = {
+        'today': datetime.now() - timedelta(hours=24),
+        'week': datetime.now() - timedelta(days=7),
+        'month': datetime.now() - timedelta(days=32),
+        'year': datetime.now() - timedelta(days=365),
+        'beginning': datetime.now() - timedelta(days=3650)
+    }
+    return calc_functions.get(srting_repr, datetime.now())
 
 
 if __name__ == "__main__":

@@ -5,13 +5,16 @@
   <div class="form-group">
     <label for="inputEmail3" class="col-sm-12 control-label general-label login-label">Payments for:</label>
     <div class="col-sm-12">
-      <select name="payments_for" id="payments_for" placeholder="Payments for..." class="form-control login-inputs">
-        <option value="today">Today</option>
-        <option value="week">Last week</option>
-        <option value="month">Last month</option>
-        <option value="year">Last year</option>
-        <option value="beginning">From beginning</option>
-      </select>
+      <form id="payments_select_form"  action="/app_cashtracker/payments/" method="post">
+        {% csrf_token %}
+        <select name="payments_for" id="payments_for" placeholder="Payments for..." class="form-control login-inputs">
+          <option value="today">Today</option>
+          <option value="week">Last week</option>
+          <option value="month">Last month</option>
+          <option value="year">Last year</option>
+          <option value="beginning">From beginning</option>
+        </select>
+      </form>
     </div>
   </div>
   <br>
@@ -19,7 +22,11 @@
   <div class="form-group">
     <table id="payments_table">
       <thead>
-        <th>Date and time</th>
+        {% if payments_for == 'today' %}
+          <th>Time</th>
+        {% else %}
+          <th>Date</th>
+        {% endif %}
         <th>Category</th>
         <th>Value</th>
       </thead>
@@ -39,7 +46,7 @@
 </div>
 <script type="text/javascript">
 $(document).ready(function(){
-  App.paymentsScript();
+  App.paymentsScript('{{ payments_for }}');
 });
 </script>
 {% endblock %}
