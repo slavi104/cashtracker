@@ -3,12 +3,13 @@ import requests
 import os
 from datetime import datetime
 from datetime import timedelta
+from decimal import *
 
 # for password hashing
 import uuid
 import hashlib
 
-def currency_converter(curr_from, curr_to, curr_input):
+def currency_converter(curr_from, curr_to, value_input):
     basepath = os.path.dirname(__file__)
     file_name = "{}.json".format(datetime.now().strftime('%Y_%m_%d'))
     rel_filepath = os.path.join(basepath, "..", "tmp", file_name)
@@ -25,8 +26,11 @@ def currency_converter(curr_from, curr_to, curr_input):
             f.write(response.content.decode())
 
     rates = exchange['rates']
+    from_value = Decimal(rates.get(curr_from, '1'))
+    to_value = Decimal(rates.get(curr_to, '1'))
+    result = Decimal(value_input/from_value*to_value)
+    return "{0:.2f}".format(result)
 
-    return curr_input/rates.get(curr_from, 1)*rates.get(curr_to, 1)
 
 
 def hash_password(password):

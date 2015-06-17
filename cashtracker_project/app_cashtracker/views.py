@@ -383,11 +383,13 @@ def payments(request):
 
     if not user_id:
         return HttpResponseRedirect(reverse('app_cashtracker:login'))
-
+    
     categories = Category.objects.filter(user_id=user_id, is_active=1)
-    payments_cat = params.get('category', 0)
+    logged_user = get_object_or_404(User, id=user_id)
     payments_for = params.get('payments_for', 'today')
     payments_from = take_date(payments_for)
+    payments_cat = params.get('category', 0)
+    payments_curr = params.get('currency', logged_user.currency)
 
     if payments_cat and payments_cat is not '0':
         payments = Payment.objects.filter(
@@ -406,14 +408,37 @@ def payments(request):
     # parse date of payment to be in hours or only date in some cases
     list(map(lambda p: p.parse_date(payments_for), payments))
 
+    # convert all values to choosen currency
+    list(map(lambda p: p.convert_currency(payments_curr), payments))
+
     context = RequestContext(request, {
-        'logged_user': get_object_or_404(User, id=user_id),
+        'logged_user': logged_user,
         'date_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         'payments': payments,
         'payments_for': payments_for,
         'categories': categories,
-        'payments_cat': payments_cat
+        'payments_cat': payments_cat,
+        'payments_curr': payments_curr
     })
     
     template = loader.get_template('app_cashtracker/payments.html')
+    return HttpResponse(template.render(context))
+
+
+def generate_report(request):
+
+    user_id = request.session.get('user_id', False)
+    params = request.POST
+
+    if not user_id:
+        return HttpResponseRedirect(reverse('app_cashtracker:login'))
+
+   
+
+    context = RequestContext(request, {
+        'logged_user': get_object_or_404(User, id=user_id),
+
+    })
+    
+    template = loader.get_template('app_cashtracker/reports.html')
     return HttpResponse(template.render(context))

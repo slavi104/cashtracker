@@ -300,3 +300,7 @@ table#payments_table {
   font-size: 1.8em;
   color: #7FA833;
 }
+
+.payment_value_holder{
+  text-align: right;
+}

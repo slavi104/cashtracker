@@ -45,7 +45,11 @@ class Payment(models.Model):
             self.date_time = self.date_time.strftime('%H:%M:%S')
         else:
             self.date_time = self.date_time.strftime('%d/%m/%Y')
+        return self
 
+    def convert_currency(self, to_currency):
+        self.value = currency_converter(self.currency, to_currency, self.value)
+        self.currency = to_currency
         return self
 
     def __str__(self):

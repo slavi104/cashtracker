@@ -44,15 +44,20 @@ App.homeScript = function(subcategories_json) {
     $('#categories_select').trigger('change');
 }
 
-App.paymentsScript = function(payments_for, payments_cat) {
+App.paymentsScript = function(payments_for, payments_cat, payments_curr) {
     $('#payments_for').val(payments_for);
     $('#categories_select').val(payments_cat);
+    $('#currency').val(payments_curr);
 
     $('#payments_for').on('change', function(){
         $('#payments_select_form').submit();
     });
 
     $('#categories_select').on('change', function(){
+        $('#payments_select_form').submit();
+    });
+
+    $('#currency').on('change', function(){
         $('#payments_select_form').submit();
     });
 }
