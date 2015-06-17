@@ -3,7 +3,7 @@ from django.db import models
 # date and time
 from datetime import datetime
 
-from .helpers.util import Util
+from .helpers.util import *
  
 # Create your models here.
 # USER
@@ -20,7 +20,7 @@ class User(models.Model):
 
     def register(self, params):
         self.email = params['email']
-        self.password = Util.hash_password(params['password_1'])
+        self.password = hash_password(params['password_1'])
         self.created = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         self.save()
 

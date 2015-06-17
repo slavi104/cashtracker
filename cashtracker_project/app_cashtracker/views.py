@@ -15,7 +15,7 @@ from .models import Category
 from .models import Subcategory
 from .models import Payment
 
-from .helpers.util import Util
+from .helpers.util import *
 
 import json
 
@@ -50,7 +50,7 @@ def login_action(request):
 
     try:
         user = get_object_or_404(User, email=email)
-        if not Util.check_password(user.password, password):
+        if not check_password(user.password, password):
             error = True
         else:
             request.session['user_id'] = user.id
@@ -220,7 +220,7 @@ def edit_profile_action(request):
         print('Error in editing profile')
 
     if params['password_1'] == params['password_2'] and params['password_1'] != '':
-        user.password = Util.hash_password(params['password_1'])
+        user.password = hash_password(params['password_1'])
     elif params['password_1'] != params['password_2']:
         not_equal_passwords = True
 
