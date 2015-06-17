@@ -13,10 +13,10 @@ class User(models.Model):
     password = models.CharField(max_length=255)
     first_name = models.CharField(max_length=255, default='')
     last_name = models.CharField(max_length=255, default='')
-    salary = models.FloatField(default=0.00)
+    salary = models.DecimalField(default=0.000, max_digits=19, decimal_places=3)
     currency = models.CharField(max_length=255, default="BGN")
     created = models.DateTimeField('date created')
-    is_active = models.IntegerField(default=1)
+    is_active = models.BooleanField(default=True)
 
     def register(self, params):
         self.email = params['email']
@@ -30,15 +30,15 @@ class User(models.Model):
 
 # PAYMENT
 class Payment(models.Model):
-    value = models.FloatField(default=0.00)
+    value = models.DecimalField(default=0.000, max_digits=19, decimal_places=3)
     currency = models.CharField(max_length=3, default="BGN")
-    category = models.IntegerField()
-    subcategory = models.IntegerField()
+    category = models.ForeignKey('Category')
+    subcategory = models.ForeignKey('Subcategory')
     date_time = models.DateTimeField('date and time created')
     name = models.CharField(max_length=255, default="")
     comment = models.CharField(max_length=1000, default="")
-    user_id = models.IntegerField()
-    is_active = models.IntegerField(default=1)
+    user = models.ForeignKey(User)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
@@ -48,8 +48,8 @@ class Payment(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=1000)
-    user_id = models.IntegerField()
-    is_active = models.IntegerField(default=1)
+    user = models.ForeignKey(User)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
@@ -58,8 +58,8 @@ class Category(models.Model):
 # SUBCATEGORY
 class Subcategory(models.Model):
     name = models.CharField(max_length=255)
-    category_id = models.IntegerField()
-    is_active = models.IntegerField(default=1)
+    category = models.ForeignKey('Category')
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
@@ -67,42 +67,42 @@ class Subcategory(models.Model):
 
 # REPORT
 class Report(models.Model):
-    user_id = models.IntegerField()
+    user = models.ForeignKey(User)
     created = models.DateTimeField('date created')
     report_type = models.CharField(max_length=255)
     report_date = models.DateTimeField('report date used for report_type')
     start_date = models.DateTimeField('start date')
     end_date = models.DateTimeField('end date')
     currency = models.CharField(max_length=3, default="BGN")
-    is_active = models.IntegerField(default=1)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return 'Report'
+        return 'Report with id - {}'.format(self.id)
 
 
 # REPORT HAS PAYMENTS
 class ReportHasPayments(models.Model):
-    report_id = models.IntegerField()
-    payment_id = models.IntegerField()
+    report = models.ForeignKey('Report')
+    payment = models.ForeignKey('Payment')
 
     def __str__(self):
-        return 'ReportHasPayments'
+        return 'ReportHasPayments with id - {}'.format(self.id)
 
 
 # REPORT HAS CATEGORIES
 class ReportHasCategories(models.Model):
-    report_id = models.IntegerField()
-    category_id = models.IntegerField()
+    report = models.ForeignKey('Report')
+    category = models.ForeignKey('Category')
 
     def __str__(self):
-        return 'ReportHasCategories'
+        return 'ReportHasCategories with id - {}'.format(self.id)
 
 
 # REPORT HAS SUBCATEGORIES
 class ReportHasSubcategories(models.Model):
-    report_id = models.IntegerField()
-    subcategory_id = models.IntegerField()
+    report = models.ForeignKey('Report')
+    subcategory = models.ForeignKey('Subcategory')
 
     def __str__(self):
-        return 'ReportHasSubcategories'
+        return 'ReportHasSubcategories with id - {}'.format(self.id)
 

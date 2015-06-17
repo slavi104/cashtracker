@@ -28,7 +28,7 @@
             {% for payment in payments %}
                 <tr>
                   <td>{{ payment.date_time }}</td>
-                  <td>{{ payment.category_name }}</td>
+                  <td>{{ payment.category.name }}</td>
                   <td>{{ payment.value }}{{ payment.currency }}</td>
                 </tr>
             {% endfor %}

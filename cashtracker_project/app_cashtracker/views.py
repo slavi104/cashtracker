@@ -119,6 +119,7 @@ def register_action(request):
             user = User()
             user.register(params)
             request.session['user_id'] = user.id
+            request.session['user'] = user
             return HttpResponseRedirect(reverse('app_cashtracker:edit_profile'))
     else:
         not_equal_passwords = True
@@ -177,13 +178,14 @@ def add_payment(request):
     payment = Payment()
     payment.value = params['value']
     payment.currency = params['currency']
-    payment.category = params['category']
-    payment.subcategory = params['subcategory']
+    payment.category = get_object_or_404(Category, id=params['category'])
+    payment.subcategory = get_object_or_404(Subcategory, 
+                                            id=params['subcategory'])
     payment.date_time = params['date_time']
     payment.name = params['name']
     payment.comment = params['comment']
-    payment.user_id = user_id
-    payment.is_active = 1
+    payment.user = get_object_or_404(User, id=user_id)
+    payment.is_active = True
     payment.save()
 
     return HttpResponseRedirect(reverse('app_cashtracker:home'))
@@ -387,10 +389,6 @@ def payments(request):
         user_id=user_id, 
         is_active=1,
         date_time__gt=yesterday.strftime('%Y-%m-%d %H:%M:%S'))
-
-    for payment in payments:
-        cat = get_object_or_404(Category, id=payment.category)
-        payment.category_name = cat.name
 
     context = RequestContext(request, {
         'logged_user': get_object_or_404(User, id=user_id),
