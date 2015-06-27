@@ -460,6 +460,9 @@ def generate_report(request):
 
     report.generate_report_pdf();
 
+    # WARNING THIS FUNCTION GENERATE FAKE PAYMENTS
+    # Payment.generate_fake_payments(user, 100)
+
     context = RequestContext(request, {
         'logged_user': user,
         'report_name': 'app_cashtracker/reports/{}.pdf'.format(report)

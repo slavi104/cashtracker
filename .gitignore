@@ -1,11 +1,13 @@
 # Byte-compiled / optimized / DLL files
 **/__pycache__/
 **/__pycache__/*.pyc
+**/static/*.pdf
 __pycache__/
 *.py[cod]
 *.pyc
 *$py.class
 db.cashtracker
+*.pdf
 
 # C extensions
 *.so

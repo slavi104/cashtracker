@@ -3,9 +3,12 @@ from django.shortcuts import get_object_or_404
 
 # date and time
 from datetime import datetime
+import time
 from decimal import *
+import textwrap
 
 from .helpers.util import *
+import random
 
 PDFS_PATH = "./app_cashtracker/static/app_cashtracker/reports/"
  
@@ -78,6 +81,36 @@ class Payment(models.Model):
 
         return payments
 
+
+    def generate_fake_payments(user, number_payments=100):
+
+        for payment_no in xrange(1, number_payments):
+            payment = Payment()
+            payment.value = random.randint(0, 80)+random.randint(0,100)/100
+            payment.currency = random.choice(['BGN','EUR','USD','JPY','GBP'])
+
+            payment.category = random.choice(
+                Category.objects.filter(user=user)
+            )
+            payment.subcategory = random.choice(
+                Subcategory.objects.filter(category=payment.category)
+            )
+
+            # get random date and time from 1/1/2014 to current timestamp
+            date_time = datetime.fromtimestamp(
+                random.randint(1388534400, int(time.time()))
+            ).strftime('%Y-%m-%d %H:%M:%S')
+
+            payment.date_time = date_time
+            payment.name = 'Payment {}'.format(payment_no)
+
+            payment.comment = ' Payment Comment {} '.format(
+                payment_no
+            )*random.randint(0, 2)
+
+            payment.user = user
+            payment.is_active = True
+            payment.save()
 
     def __str__(self):
         return self.name
@@ -172,8 +205,9 @@ class Report(models.Model):
          'Value'
          ]]
 
-        payments_data = {}
-        payments_data['all_total'] = Decimal('0')
+        payments_stat_data = {}
+        payments_stat_data['all_total'] = Decimal('0')
+
         for payment in payments:
 
             payment_data = []
@@ -183,30 +217,50 @@ class Report(models.Model):
 
             # add data for all payments
             payment_data.append(payment.date_time)
-            payment_data.append(payment.name)
+            payment_data.append(textwrap.fill(payment.name,20))
             payment_data.append(payment.category)
             payment_data.append(payment.subcategory)
-            payment_data.append(payment.comment)
+            payment_data.append(textwrap.fill(payment.comment,25))
             payment_data.append(payment.value)
 
-            payments_data['all_total'] += Decimal(payment.value)
+            # collect statistics data
+            p_value = Decimal(payment.value)
+
+            payments_stat_data['all_total'] += p_value
+            category_key = 'all_category_{}'.format(payment.category.id)
+
+            if payments_stat_data.get(category_key, 0):
+                payments_stat_data[category_key] += p_value
+            else:
+                payments_stat_data[category_key] = p_value
+
+            subcategory_key = 'all_subcategory_{}'.format(
+                                                    payment.subcategory.id
+                                                   )
+
+            if payments_stat_data.get(subcategory_key, 0):
+                payments_stat_data[subcategory_key] += p_value
+            else:
+                payments_stat_data[subcategory_key] = p_value
 
             payments_table.append(payment_data)
         
         elements.append(
             Paragraph(
                 "Total: <b>{}{}</b><br/><br/>".format(
-                    payments_data['all_total'],
+                    payments_stat_data['all_total'],
                     self.currency
                 ),
                 styleN)
             )
 
-        t=Table(payments_table, colWidths=(None, 80, 80, None, 120, 50))
+        t=Table(payments_table, colWidths=(None, 110, None, None, 150, 50))
         t.setStyle(TableStyle([
             ('GRID', (0,0), (-1,-1), 0.25, colors.black),
             ('ALIGN', (5,1), (-1,-1), 'RIGHT')]))
         elements.append(t)
+
+        print(payments_stat_data)
         # write the document to disk
         doc.build(elements)
         return self
@@ -241,7 +295,12 @@ class Report(models.Model):
 
 
     def __str__(self):
-        return 'Report_from_{}_in_{}'.format(self.report_type, self.currency)
+        return 'Report_from_{}_in_{}_{}_{}'.format(
+            self.report_type, 
+            self.currency, 
+            self.user.id,
+            time.time()
+        )
 
 
 # REPORT HAS PAYMENTS
