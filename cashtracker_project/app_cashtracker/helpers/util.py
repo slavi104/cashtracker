@@ -10,6 +10,11 @@ from reportlab.pdfgen import canvas
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import Paragraph, SimpleDocTemplate
+from reportlab.graphics.shapes import Drawing
+from reportlab.graphics.charts.piecharts import Pie
+from reportlab.graphics.charts.linecharts import HorizontalLineChart
+from reportlab.platypus.flowables import PageBreak 
+from django.utils import timezone
 
 
 # for password hashing
@@ -18,7 +23,7 @@ import hashlib
 
 def currency_converter(curr_from, curr_to, value_input):
     basepath = os.path.dirname(__file__)
-    file_name = "{}.json".format(datetime.now().strftime('%Y_%m_%d'))
+    file_name = "{}.json".format(timezone.now().strftime('%Y_%m_%d'))
     rel_filepath = os.path.join(basepath, "..", "tmp", file_name)
     abs_filepath = os.path.abspath(rel_filepath)
 
@@ -53,13 +58,13 @@ def check_password(hashed_password, user_password):
 
 def take_date(srting_repr):
     calc_functions = {
-        'today': datetime.now() - timedelta(hours=24),
-        'week': datetime.now() - timedelta(days=7),
-        'month': datetime.now() - timedelta(days=32),
-        'year': datetime.now() - timedelta(days=365),
-        'beginning': datetime.now() - timedelta(days=3650)
+        'today': timezone.now() - timedelta(hours=24),
+        'week': timezone.now() - timedelta(days=7),
+        'month': timezone.now() - timedelta(days=32),
+        'year': timezone.now() - timedelta(days=365),
+        'beginning': timezone.now() - timedelta(days=3650)
     }
-    return calc_functions.get(srting_repr, datetime.now())
+    return calc_functions.get(srting_repr, timezone.now())
 
 
 if __name__ == "__main__":

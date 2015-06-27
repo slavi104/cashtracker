@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
 from django.core.urlresolvers import reverse
+from django.utils import timezone
 
 # date and time
 from datetime import datetime
@@ -160,7 +161,7 @@ def home(request):
         'logged_user': user,
         'categories': categories,
         'subcategories': json.dumps(subcategories),
-        'date_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'date_time': timezone.now().strftime('%Y-%m-%d %H:%M:%S'),
         'currency': user.currency
     })
 
@@ -407,7 +408,7 @@ def payments(request):
 
     context = RequestContext(request, {
         'logged_user': logged_user,
-        'date_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'date_time': timezone.now().strftime('%Y-%m-%d %H:%M:%S'),
         'payments': payments,
         'payments_for': payments_for,
         'categories': categories,
@@ -434,11 +435,11 @@ def generate_report(request):
 
     report = Report()
     report.user = user
-    report.created = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    report.created = timezone.now().strftime('%Y-%m-%d %H:%M:%S')
     report.report_type = payments_for
-    report.report_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    report.report_date = timezone.now().strftime('%Y-%m-%d %H:%M:%S')
     report.start_date = take_date(payments_for)
-    report.end_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    report.end_date = timezone.now().strftime('%Y-%m-%d %H:%M:%S')
     report.currency = payments_curr
     report.is_active = 1
     report.save()

@@ -1,5 +1,6 @@
 from django.db import models
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 
 # date and time
 from datetime import datetime
@@ -9,6 +10,7 @@ import textwrap
 
 from .helpers.util import *
 import random
+from collections import OrderedDict
 
 PDFS_PATH = "./app_cashtracker/static/app_cashtracker/reports/"
  
@@ -28,7 +30,7 @@ class User(models.Model):
     def register(self, params):
         self.email = params['email']
         self.password = hash_password(params['password_1'])
-        self.created = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        self.created = timezone.now().strftime('%Y-%m-%d %H:%M:%S')
         self.save()
 
     def __str__(self):
@@ -97,6 +99,7 @@ class Payment(models.Model):
             )
 
             # get random date and time from 1/1/2014 to current timestamp
+            # use 1425168000 for from 01/03/2015
             date_time = datetime.fromtimestamp(
                 random.randint(1388534400, int(time.time()))
             ).strftime('%Y-%m-%d %H:%M:%S')
@@ -205,13 +208,14 @@ class Report(models.Model):
          'Value'
          ]]
 
-        payments_stat_data = {}
+        payments_stat_data = OrderedDict()
         payments_stat_data['all_total'] = Decimal('0')
 
         for payment in payments:
 
             payment_data = []
             # update payments objects
+            orig_date = payment.date_time
             payment.parse_date(self.report_type)
             payment.convert_currency(self.currency)
 
@@ -226,6 +230,7 @@ class Report(models.Model):
             # collect statistics data
             p_value = Decimal(payment.value)
 
+            # stats for categories
             payments_stat_data['all_total'] += p_value
             category_key = 'all_category_{}'.format(payment.category.id)
 
@@ -234,6 +239,7 @@ class Report(models.Model):
             else:
                 payments_stat_data[category_key] = p_value
 
+            # stats for subcategories
             subcategory_key = 'all_subcategory_{}'.format(
                                                     payment.subcategory.id
                                                    )
@@ -242,6 +248,23 @@ class Report(models.Model):
                 payments_stat_data[subcategory_key] += p_value
             else:
                 payments_stat_data[subcategory_key] = p_value
+
+            # stats in time
+            if self.report_type == 'month':
+                date_time_key = 'date_time_{}'.format(orig_date.strftime('%U'))
+            if self.report_type == 'week':
+                date_time_key = 'date_time_{}'.format(orig_date.strftime('%a'))
+            elif self.report_type == 'year':
+                date_time_key = 'date_time_{}'.format(orig_date.strftime('%b'))
+            elif self.report_type == 'beginning':
+                date_time_key = 'date_time_{}'.format(orig_date.strftime('%Y'))
+            elif self.report_type == 'today':
+                date_time_key = 'date_time_{}'.format(orig_date.strftime('%H:%M'))
+
+            if payments_stat_data.get(date_time_key, 0):
+                payments_stat_data[date_time_key] += p_value
+            else:
+                payments_stat_data[date_time_key] = p_value
 
             payments_table.append(payment_data)
         
@@ -254,13 +277,100 @@ class Report(models.Model):
                 styleN)
             )
 
+        # TABLE
         t=Table(payments_table, colWidths=(None, 110, None, None, 150, 50))
         t.setStyle(TableStyle([
             ('GRID', (0,0), (-1,-1), 0.25, colors.black),
             ('ALIGN', (5,1), (-1,-1), 'RIGHT')]))
+
+        # add table to pdf
         elements.append(t)
 
-        print(payments_stat_data)
+        elements.append(PageBreak())
+
+        elements.append(
+            Paragraph(
+                "<u>Charts</u><br/><br/>",
+                styleH)
+            )
+
+        # pie cahrt for categories
+        pc_cat = Pie()
+        pc_cat.x = 0
+        pc_cat.width = 180
+        pc_cat.height = 180
+        pc_cat.data = []
+        pc_cat.labels = []
+
+        # pie chart for subcategories
+        pc_subcat = Pie()
+        pc_subcat.x = 250
+        pc_subcat.width = 180
+        pc_subcat.height = 180
+        pc_subcat.data = []
+        pc_subcat.labels = []
+        lc_data = []
+        cat_names = []
+
+        for stat, value in payments_stat_data.items():
+            stat_vars = stat.split('_');
+            if stat_vars[1] == 'category':
+                pc_cat.data.append(float(value))
+                pc_cat.labels.append(
+                    get_object_or_404(Category, id=stat_vars[2])
+                )
+            elif stat_vars[1] == 'subcategory':
+                pc_subcat.data.append(float(value))
+                pc_subcat.labels.append(
+                    get_object_or_404(Subcategory, id=stat_vars[2])
+                )
+            elif stat_vars[1] == 'time':
+                lc_data.append(float(value))
+                cat_names.append(stat_vars[2])
+
+        # PIE CHARTS IN DRAWING
+        if len(pc_cat.labels) > 1:
+            elements.append(
+                Paragraph(
+                    "<u><b>Pie charts for categories and subcategories.</b></u>",
+                    styleN)
+                )
+            d_pie = Drawing(350, 220)
+            d_pie.add(pc_cat)
+            d_pie.add(pc_subcat)
+            # add charts to PDF
+            elements.append(d_pie)
+
+        if len(lc_data) == 0:
+            return self
+
+        elements.append(
+            Paragraph(
+                "<br/><br/><br/><u><b>Line Chart for payment amounts in time.</b></u>",
+                styleN)
+            )
+
+        lc = HorizontalLineChart()
+        lc.x = 0
+        lc.height = 150
+        lc.width = 450
+        lc.data = [tuple(lc_data)]
+        lc.joinedLines = 1
+        # catNames = 'Jan Feb Mar Apr May Jun Jul Aug'.split(' ')
+        lc.categoryAxis.categoryNames = tuple(cat_names)
+        lc.categoryAxis.labels.boxAnchor = 'n'
+        lc.valueAxis.valueMin = 0
+        lc.valueAxis.valueMax = int(max(lc_data))
+        lc.valueAxis.valueStep = int(max(lc_data)/10)
+        lc.lines[0].strokeWidth = 2
+        lc.lines[1].strokeWidth = 1.5
+
+        d_lc = Drawing(350, 180)
+        d_lc.add(lc)
+
+        # add charts to PDF
+        elements.append(d_lc)
+
         # write the document to disk
         doc.build(elements)
         return self
@@ -291,7 +401,8 @@ class Report(models.Model):
 
     def fetch_payments(self):
         rhp = ReportHasPayments.objects.filter(report=self)
-        return list(map(lambda r: r.payment, rhp))
+        payments = list(map(lambda r: r.payment, rhp))
+        return sorted(payments, key=lambda p: p.date_time, reverse=False)
 
 
     def __str__(self):
@@ -299,7 +410,7 @@ class Report(models.Model):
             self.report_type, 
             self.currency, 
             self.user.id,
-            time.time()
+            'dsda'
         )
 
 
