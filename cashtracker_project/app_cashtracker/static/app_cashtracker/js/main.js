@@ -60,4 +60,15 @@ App.paymentsScript = function(payments_for, payments_cat, payments_curr) {
     $('#currency').on('change', function(){
         $('#payments_select_form').submit();
     });
+
+    $('#generate_pdf_button').on('click', function(e){
+        e.preventDefault();
+        $('#payments_select_form').attr('action', '/app_cashtracker/generate_report/')
+        $('#payments_select_form').submit();
+    });
+}
+
+App.reportsScript = function(report_name) {
+    var newURL = window.location.protocol + "//" + window.location.host + "/" + "app_cashtracker/login";
+    window.location = newURL;
 }

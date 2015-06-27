@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Reports{% endblock %}
+{% block content %}
+{% load staticfiles %}
+<br>
+<br>
+<br>
+<br>
+<a href="{% static report_name %}" target="_blank">REPORTA</a>
+<br>
+<br>
+<a class="settings_menu_button" href="/app_cashtracker/payments">Payments</a>
+<script type="text/javascript">
+$(document).ready(function(){
+  //App.reportsScript('{{ report_name }}');
+});
+</script>
+{% endblock %}

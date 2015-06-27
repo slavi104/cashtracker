@@ -4,6 +4,13 @@ import os
 from datetime import datetime
 from datetime import timedelta
 from decimal import *
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas 
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import Paragraph, SimpleDocTemplate
+
 
 # for password hashing
 import uuid

@@ -13,6 +13,8 @@ from .models import User
 from .models import Category
 from .models import Subcategory
 from .models import Payment
+from .models import Report
+from .models import ReportHasCategories
 
 from .helpers.util import *
 
@@ -387,23 +389,15 @@ def payments(request):
     categories = Category.objects.filter(user_id=user_id, is_active=1)
     logged_user = get_object_or_404(User, id=user_id)
     payments_for = params.get('payments_for', 'today')
-    payments_from = take_date(payments_for)
-    payments_cat = params.get('category', 0)
     payments_curr = params.get('currency', logged_user.currency)
+    payments_cat = params.get('category', 0)
 
-    if payments_cat and payments_cat is not '0':
-        payments = Payment.objects.filter(
-            user_id=user_id, 
-            is_active=1,
-            date_time__gt=payments_from.strftime('%Y-%m-%d %H:%M:%S'),
-            category=get_object_or_404(Category, id=payments_cat)
-        )
-    else:
-        payments = Payment.objects.filter(
-            user_id=user_id, 
-            is_active=1,
-            date_time__gt=payments_from.strftime('%Y-%m-%d %H:%M:%S')
-        )
+    payments = Payment.fetch_payments(
+        payments_for, 
+        payments_cat, 
+        payments_curr,
+        logged_user
+    )
 
     # parse date of payment to be in hours or only date in some cases
     list(map(lambda p: p.parse_date(payments_for), payments))
@@ -433,10 +427,42 @@ def generate_report(request):
     if not user_id:
         return HttpResponseRedirect(reverse('app_cashtracker:login'))
 
-   
+    user = get_object_or_404(User, id=user_id)
+    payments_for = params.get('payments_for', 'today')
+    payments_curr = params.get('currency', user.currency)
+    payments_cat = params.get('category', 0)
+
+    report = Report()
+    report.user = user
+    report.created = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    report.report_type = payments_for
+    report.report_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    report.start_date = take_date(payments_for)
+    report.end_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    report.currency = payments_curr
+    report.is_active = 1
+    report.save()
+
+    # TODO - make it work with multiple categories
+    if payments_cat and payments_cat is not '0':
+        report.add_category(get_object_or_404(Category, id=payments_cat))
+
+    payments = Payment.fetch_payments(
+        payments_for, 
+        payments_cat, 
+        payments_curr,
+        user
+    )
+
+    # add payments to report
+    for payment in payments:
+        report.add_payment(payment)
+
+    report.generate_report_pdf();
 
     context = RequestContext(request, {
-        'logged_user': get_object_or_404(User, id=user_id),
+        'logged_user': user,
+        'report_name': 'app_cashtracker/reports/{}.pdf'.format(report)
 
     })
     

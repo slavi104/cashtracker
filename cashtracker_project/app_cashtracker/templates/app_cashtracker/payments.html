@@ -44,8 +44,18 @@
     </div>
     <br>
     <br>
+    <div class="row-fluid">
+      <span class="one-row-two-buttons add-new-button-holder">
+        <button id="generate_pdf_button" class="btn btn-default action-button action-button-max-width">Generate PDF report</button>
+      </span>
+    </div>
   </form>
   <div class="form-group">
+    <br>
+    <br>
+    <div class="space"></div>
+    <hr>
+    <label for="inputEmail3" class="col-sm-12 control-label general-label login-label">Payments preview:</label>
     <table id="payments_table">
       <thead>
         {% if payments_for == 'today' %}
