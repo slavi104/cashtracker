@@ -301,6 +301,7 @@ class Report(models.Model):
         pc_cat.height = 180
         pc_cat.data = []
         pc_cat.labels = []
+        pc_cat.sideLabels =1
 
         # pie chart for subcategories
         pc_subcat = Pie()
@@ -309,6 +310,7 @@ class Report(models.Model):
         pc_subcat.height = 180
         pc_subcat.data = []
         pc_subcat.labels = []
+        pc_subcat.sideLabels =1
         lc_data = []
         cat_names = []
 
@@ -335,18 +337,67 @@ class Report(models.Model):
                     "<u><b>Pie charts for categories and subcategories.</b></u>",
                     styleN)
                 )
-            d_pie = Drawing(350, 220)
+            d_pie = Drawing(350, 240)
             d_pie.add(pc_cat)
             d_pie.add(pc_subcat)
             # add charts to PDF
             elements.append(d_pie)
+
+            float_left = True
+            counter = 0
+            for category in pc_cat.labels:
+                counter += 1
+                pc_category = Pie()
+
+                if float_left:
+                    pc_category.x = 0
+                    float_left = False
+                else:
+                    pc_category.x = 250
+                    float_left = True
+
+                pc_category.width = 180
+                pc_category.height = 180
+                pc_category.data = []
+                pc_category.labels = []
+                pc_category.sideLabels =1
+
+                subcategories = Subcategory.objects.filter(category=category)
+                
+                for sc_id in list(map(lambda sc: sc.id, subcategories)):
+                    # stats for subcategories
+                    subcategory_key = 'all_subcategory_{}'.format(sc_id)
+
+                    if payments_stat_data.get(subcategory_key, 0):
+                        payments_stat_data[subcategory_key] += p_value
+                        pc_category.data.append(float(value))
+                        pc_category.labels.append(
+                            get_object_or_404(Subcategory, id=sc_id)
+                        )
+
+                if counter % 2 == 0 :
+                    d_pie_categories.add(pc_category)
+                    elements.append(
+                        Paragraph(
+                            "<br/><br/><br/><u><b>Pie chart for {} and {}.</b></u>".format(
+                                last_category, category),
+                            styleN)
+                        )
+                    elements.append(d_pie_categories)
+                else:
+                    last_category = category
+                    d_pie_categories = Drawing(350, 240)
+                    d_pie_categories.add(pc_category)
+
+
+
 
         if len(lc_data) == 0:
             return self
 
         elements.append(
             Paragraph(
-                "<br/><br/><br/><u><b>Line Chart for payment amounts in time.</b></u>",
+                "<br/><br/><br/><br/><br/><u><b>Line Chart for payment amounts in time.</b></u>",
                 styleN)
             )
 
