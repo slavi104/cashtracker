@@ -320,3 +320,22 @@ table#reports_table {
   padding-bottom: 2%;
   padding-top: 2%;
 }
+
+.modal_buttons{
+  width: 49%;
+  padding: 1%;
+}
+
+@media (min-width: 768px) {
+  .modal-dialog {
+    width: 90%;
+    margin: 30px auto;
+  }
+}
+
+.close_x_button{
+  font-size: 3em;
+  padding-right: 0;
+  margin-top: 0;
+  margin-right: 15px;
+}

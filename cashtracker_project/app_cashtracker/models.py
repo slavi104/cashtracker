@@ -456,7 +456,9 @@ class Report(models.Model):
 
 
     def fetch_reports(user):
-        reports = Report.objects.filter(user=user).order_by('-created')
+        reports = Report.objects.filter(
+            user=user, 
+            is_active=1).order_by('-created')
         return list(map(lambda r: r.parse_date(), reports))
 
 

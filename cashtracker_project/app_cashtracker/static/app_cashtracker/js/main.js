@@ -2,6 +2,8 @@ App = {
 
 };
 
+App.delete_item_id = 0;
+
 App.settingsScript = function() {
     $('#menu_button').on('click', function(){
         if ($(this).data('showed_menu') == '0') {
@@ -70,7 +72,44 @@ App.paymentsScript = function(payments_for, payments_cat, payments_curr) {
     });
 }
 
-App.reportsScript = function(report_name) {
-    var newURL = window.location.protocol + "//" + window.location.host + "/" + "app_cashtracker/login";
-    window.location = newURL;
+App.reportsScript = function() {
+    $('.delete').on('click', function(){
+        App.delete_item_id = $(this).data('id');
+    });
+    $('.modal_delete_modal').on('click', function(){
+        if (App.delete_item_id) {
+            $.ajax({
+                type: 'post',
+                url: "/app_cashtracker/delete_report/",
+                data: {
+                    report_id: App.delete_item_id,
+                    csrfmiddlewaretoken: getCookie('csrftoken')
+                },
+                dataType: 'json'
+            }).done(function(data){
+                if (data.success) {
+                    $('#report_' + App.delete_item_id).parent().parent().parent().remove();
+                } else {
+                    alert(data.message);
+                };
+            });
+        };
+    });
+}
+
+// using jQuery
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
 }

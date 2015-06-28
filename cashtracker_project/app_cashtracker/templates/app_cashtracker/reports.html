@@ -22,7 +22,7 @@
                         <img class="action_buttons" src="{% static 'app_cashtracker/images/download.png' %}">
                     </a>
                     <span style="margin-left: 10%;" class="delete-button-holder">
-                      <img class="action_buttons" src="{% static 'app_cashtracker/images/delete.png' %}">
+                      <img id="report_{{ report.id }}" data-id="{{ report.id }}" data-toggle="modal" data-target="#delete_modal" class="action_buttons delete" src="{% static 'app_cashtracker/images/delete.png' %}">
                     </span>
                   </td>
                 </tr>
@@ -34,7 +34,7 @@
 </div>
 <script type="text/javascript">
 $(document).ready(function(){
-  //App.reportsScript('{{ report_name }}');
+  App.reportsScript();
 });
 </script>
 {% endblock %}
