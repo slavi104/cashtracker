@@ -23,7 +23,7 @@ import hashlib
 
 def currency_converter(curr_from, curr_to, value_input):
     basepath = os.path.dirname(__file__)
-    now = timezone.now() + timedelta(hours=3)
+    now = timezone.now()# + timedelta(hours=3)
     file_name = "{}.json".format(now.strftime('%Y_%m_%d'))
     rel_filepath = os.path.join(basepath, "..", "tmp", file_name)
     abs_filepath = os.path.abspath(rel_filepath)
@@ -58,7 +58,7 @@ def check_password(hashed_password, user_password):
 
 
 def take_date(srting_repr):
-    now = timezone.now() + timedelta(hours=3)
+    now = timezone.now()# + timedelta(hours=3)
     calc_functions = {
         'today': now - timedelta(hours=24),
         'week': now - timedelta(days=7),

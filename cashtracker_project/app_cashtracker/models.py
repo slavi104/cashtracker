@@ -28,7 +28,7 @@ class User(models.Model):
     is_active = models.BooleanField(default=True)
 
     def register(self, params):
-        now = timezone.now() + timedelta(hours=3)
+        now = timezone.now()# + timedelta(hours=3)
         self.email = params['email']
         self.password = hash_password(params['password_1'])
         self.created = now.strftime('%Y-%m-%d %H:%M:%S')

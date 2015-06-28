@@ -408,7 +408,7 @@ def payments(request):
     # convert all values to choosen currency
     list(map(lambda p: p.convert_currency(payments_curr), payments))
 
-    now = timezone.now() + timedelta(hours=3)
+    now = timezone.now()# + timedelta(hours=3)
     context = RequestContext(request, {
         'logged_user': logged_user,
         'date_time': now.strftime('%Y-%m-%d %H:%M:%S'),
