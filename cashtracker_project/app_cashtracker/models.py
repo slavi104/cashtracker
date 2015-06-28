@@ -171,25 +171,25 @@ class Report(models.Model):
 
         elements.append(
             Paragraph(
-                "<u>BILLING REPORT</u><br/><br/>",
+                "<u><font color=green>PAYMENTS REPORT</font></u><br/>by CashTracker™<br/>",
                 styleH)
             )
 
         elements.append(
             Paragraph(
-                "Payments from: <b>{}</b>".format(self.report_type.title()),
+                "<font color=green>Payments from: </font><b>{}</b>".format(self.report_type.title()),
                 styleN)
             )
 
         elements.append(
             Paragraph(
-                "Currency: <b>{}</b>".format(self.currency),
+                "<font color=green>Currency: </font><b>{}</b>".format(self.currency),
                 styleN)
             )
 
         elements.append(
             Paragraph(
-                "Categories: <b>{}</b>".format(self.category_names()),
+                "<font color=green>Categories: </font><b>{}</b>".format(self.category_names()),
                 styleN)
             )
 
@@ -271,7 +271,7 @@ class Report(models.Model):
         
         elements.append(
             Paragraph(
-                "Total: <b>{}{}</b><br/><br/>".format(
+                "<font color=green>Total: </font><b>{}{}</b><br/><br/>".format(
                     payments_stat_data['all_total'],
                     self.currency
                 ),
@@ -281,8 +281,10 @@ class Report(models.Model):
         # TABLE
         t=Table(payments_table, colWidths=(None, 110, None, None, 150, 50))
         t.setStyle(TableStyle([
-            ('GRID', (0,0), (-1,-1), 0.25, colors.black),
-            ('ALIGN', (5,1), (-1,-1), 'RIGHT')]))
+            ('GRID', (0,0), (-1,-1), 0.25, colors.green),
+            ('ALIGN', (5,1), (-1,-1), 'RIGHT'),
+            ('TEXTCOLOR',(0,0),(-1,0), colors.green)
+        ]))
 
         # add table to pdf
         elements.append(t)
@@ -291,7 +293,7 @@ class Report(models.Model):
 
         elements.append(
             Paragraph(
-                "<u>Charts</u><br/><br/>",
+                "<u><font color=green>CHARTS</font></u><br/><br/>",
                 styleH)
             )
 
@@ -335,7 +337,7 @@ class Report(models.Model):
         if len(pc_cat.labels) > 1:
             elements.append(
                 Paragraph(
-                    "<u><b>Pie charts for categories and subcategories.</b></u>",
+                    "<u><b><font color=green>Pie charts for categories and subcategories.</font></b></u>",
                     styleN)
                 )
             d_pie = Drawing(350, 240)
@@ -344,51 +346,62 @@ class Report(models.Model):
             # add charts to PDF
             elements.append(d_pie)
 
-            float_left = True
-            counter = 0
-            for category in pc_cat.labels:
-                counter += 1
-                pc_category = Pie()
+        float_left = True
+        counter = 0
+        for category in pc_cat.labels:
+            counter += 1
+            pc_category = Pie()
 
-                if float_left:
-                    pc_category.x = 0
-                    float_left = False
-                else:
-                    pc_category.x = 250
-                    float_left = True
+            if float_left:
+                pc_category.x = 0
+                float_left = False
+            else:
+                pc_category.x = 250
+                float_left = True
 
-                pc_category.width = 160
-                pc_category.height = 160
-                pc_category.data = []
-                pc_category.labels = []
-                pc_category.sideLabels =1
+            pc_category.width = 160
+            pc_category.height = 160
+            pc_category.data = []
+            pc_category.labels = []
+            pc_category.sideLabels =1
 
-                subcategories = Subcategory.objects.filter(category=category)
-                
-                for sc_id in list(map(lambda sc: sc.id, subcategories)):
-                    # stats for subcategories
-                    subcategory_key = 'all_subcategory_{}'.format(sc_id)
+            subcategories = Subcategory.objects.filter(category=category)
+            
+            for sc_id in list(map(lambda sc: sc.id, subcategories)):
+                # stats for subcategories
+                subcategory_key = 'all_subcategory_{}'.format(sc_id)
 
-                    if payments_stat_data.get(subcategory_key, 0):
-                        payments_stat_data[subcategory_key] += p_value
-                        pc_category.data.append(float(value))
-                        pc_category.labels.append(
-                            get_object_or_404(Subcategory, id=sc_id)
-                        )
+                if payments_stat_data.get(subcategory_key, 0):
+                    payments_stat_data[subcategory_key] += p_value
+                    pc_category.data.append(float(value))
+                    pc_category.labels.append(
+                        get_object_or_404(Subcategory, id=sc_id)
+                    )
 
-                if counter % 2 == 0 :
-                    d_pie_categories.add(pc_category)
+            if counter % 2 == 0 :
+                d_pie_categories.add(pc_category)
+
+                if len(pc_cat.labels) % 2 == 0 :
                     elements.append(
                         Paragraph(
-                            "<br/><br/><br/><u><b>Pie chart for {} and {}.</b></u>".format(
+                            "<br/><br/><br/><u><b><font color=green>Pie chart for {} and {}.</font></b></u>".format(
                                 last_category, category),
                             styleN)
                         )
                     elements.append(d_pie_categories)
-                else:
-                    last_category = category
-                    d_pie_categories = Drawing(350, 240)
-                    d_pie_categories.add(pc_category)
+            else:
+                last_category = category
+                d_pie_categories = Drawing(350, 240)
+                d_pie_categories.add(pc_category)
+
+                if len(pc_cat.labels) % 2 != 0 :
+                    elements.append(
+                        Paragraph(
+                            "<br/><br/><br/><u><b><font color=green>Pie chart for {}.</font></b></u>".format(
+                                category),
+                            styleN)
+                        )
+                    elements.append(d_pie_categories)
 
 
         if len(lc_data) == 0:
@@ -396,7 +409,7 @@ class Report(models.Model):
 
         elements.append(
             Paragraph(
-                "<br/><br/><br/><br/><br/><u><b>Line Chart for payment amounts in time.</b></u>",
+                "<br/><br/><br/><br/><br/><u><b><font color=green>Line Chart for payment amounts in time.</font></b></u>",
                 styleN)
             )
 
