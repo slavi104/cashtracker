@@ -93,10 +93,10 @@ class Payment(models.Model):
             payment.currency = random.choice(['BGN','EUR','USD','JPY','GBP'])
 
             payment.category = random.choice(
-                Category.objects.filter(user=user)
+                Category.objects.filter(user=user, is_active=1)
             )
             payment.subcategory = random.choice(
-                Subcategory.objects.filter(category=payment.category)
+                Subcategory.objects.filter(category=payment.category, is_active=1)
             )
 
             # get random date and time from 1/1/2014 to current timestamp
@@ -409,7 +409,7 @@ class Report(models.Model):
 
         elements.append(
             Paragraph(
-                "<br/><br/><br/><br/><br/><u><b><font color=green>Line Chart for payment amounts in time.</font></b></u>",
+                "<br/><br/><br/><br/><br/><br/><br/><u><b><font color=green>Line Chart for payment amounts in time.</font></b></u>",
                 styleN)
             )
 
