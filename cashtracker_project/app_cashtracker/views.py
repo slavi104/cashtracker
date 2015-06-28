@@ -436,7 +436,7 @@ def generate_report(request):
     payments_curr = params.get('currency', user.currency)
     payments_cat = params.get('category', 0)
 
-    now = timezone.now() + timedelta(hours=3)
+    now = timezone.now()
     report = Report()
     report.user = user
     report.created = now.strftime('%Y-%m-%d %H:%M:%S')
@@ -446,6 +446,8 @@ def generate_report(request):
     report.end_date = now.strftime('%Y-%m-%d %H:%M:%S')
     report.currency = payments_curr
     report.is_active = 1
+    report.save()
+    report.url = 'app_cashtracker/reports/{}.pdf'.format(report)
     report.save()
 
     # TODO - make it work with multiple categories
@@ -467,12 +469,24 @@ def generate_report(request):
 
     # WARNING THIS FUNCTION GENERATE FAKE PAYMENTS
     # Payment.generate_fake_payments(user, 100)
+    return HttpResponseRedirect(reverse('app_cashtracker:reports'))
 
+
+def reports(request):
+
+    user_id = request.session.get('user_id', False)
+    params = request.POST
+
+    if not user_id:
+        return HttpResponseRedirect(reverse('app_cashtracker:login'))
+    
+    user = get_object_or_404(User, id=user_id)
     context = RequestContext(request, {
         'logged_user': user,
-        'report_name': 'app_cashtracker/reports/{}.pdf'.format(report)
+        'reports': Report.fetch_reports(user)
 
     })
     
     template = loader.get_template('app_cashtracker/reports.html')
     return HttpResponse(template.render(context))
+

@@ -156,8 +156,8 @@ class Report(models.Model):
     start_date = models.DateTimeField('start date')
     end_date = models.DateTimeField('end date')
     currency = models.CharField(max_length=3, default="BGN")
+    url = models.CharField(max_length=255, default="")
     is_active = models.BooleanField(default=True)
-
 
     def generate_report_pdf(self):
     
@@ -455,12 +455,21 @@ class Report(models.Model):
         return sorted(payments, key=lambda p: p.date_time, reverse=False)
 
 
+    def fetch_reports(user):
+        reports = Report.objects.filter(user=user).order_by('-created')
+        return list(map(lambda r: r.parse_date(), reports))
+
+
+    def parse_date(self):
+        self.created = self.created.strftime('%d/%m/%Y')
+        return self
+
+
     def __str__(self):
-        return 'Report_from_{}_in_{}_{}_{}'.format(
+        return 'Report_from_{}_in_{}_({})'.format(
             self.report_type, 
             self.currency, 
-            self.user.id,
-            'dsda'
+            self.id
         )
 
 

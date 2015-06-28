@@ -304,3 +304,19 @@ table#payments_table {
 .payment_value_holder{
   text-align: right;
 }
+
+.action_buttons{
+  width: 40%;
+  cursor: pointer;
+}
+
+table#reports_table {
+  width: 100%;
+  font-size: 1.8em;
+  color: #7FA833;
+}
+
+#reports_table > tbody > tr > td {
+  padding-bottom: 2%;
+  padding-top: 2%;
+}
