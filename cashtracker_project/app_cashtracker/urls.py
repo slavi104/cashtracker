@@ -3,6 +3,7 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
+    url(r'^generate_fake_payments/(?P<number_of_payments>[0-9]+)', views.generate_fake_payments, name='generate_fake_payments'),
     url(r'^delete_report/$', views.delete_report, name='delete_report'),
     url(r'^delete_payment/$', views.delete_payment, name='delete_payment'),
     url(r'^reports/$', views.reports, name='reports'),

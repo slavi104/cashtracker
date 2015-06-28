@@ -467,8 +467,6 @@ def generate_report(request):
 
     report.generate_report_pdf();
 
-    # WARNING THIS FUNCTION GENERATE FAKE PAYMENTS
-    # Payment.generate_fake_payments(user, 100)
     return HttpResponseRedirect(reverse('app_cashtracker:reports'))
 
 
@@ -533,3 +531,19 @@ def delete_payment(request):
         result['message'] = 'Error in delete payment'
     
     return HttpResponse(json.dumps(result, separators=(',',':')))
+
+
+def generate_fake_payments(request, number_of_payments = 100):
+    user_id = request.session.get('user_id', False)
+
+    if not user_id:
+        return HttpResponseRedirect(reverse('app_cashtracker:login'))
+
+    # WARNING THIS FUNCTION GENERATE FAKE PAYMENTS
+    Payment.generate_fake_payments(
+        get_object_or_404(User, id=user_id), 
+        int(number_of_payments)
+    )
+
+    return HttpResponseRedirect(reverse('app_cashtracker:home'))
+
