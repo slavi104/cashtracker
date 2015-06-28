@@ -70,6 +70,30 @@ App.paymentsScript = function(payments_for, payments_cat, payments_curr) {
         $('#payments_select_form').attr('action', '/app_cashtracker/generate_report/')
         $('#payments_select_form').submit();
     });
+
+    $('.delete').on('click', function(){
+        App.delete_item_id = $(this).data('id');
+    });
+
+    $('.modal_delete_modal').on('click', function(){
+        if (App.delete_item_id) {
+            $.ajax({
+                type: 'post',
+                url: "/app_cashtracker/delete_payment/",
+                data: {
+                    payment_id: App.delete_item_id,
+                    csrfmiddlewaretoken: getCookie('csrftoken')
+                },
+                dataType: 'json'
+            }).done(function(data){
+                if (data.success) {
+                    $('#payment_' + App.delete_item_id).parent().parent().parent().remove();
+                } else {
+                    alert(data.message);
+                };
+            });
+        };
+    });
 }
 
 App.reportsScript = function() {

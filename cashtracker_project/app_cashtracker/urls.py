@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     url(r'^delete_report/$', views.delete_report, name='delete_report'),
+    url(r'^delete_payment/$', views.delete_payment, name='delete_payment'),
     url(r'^reports/$', views.reports, name='reports'),
     url(r'^payments/$', views.payments, name='payments'),
     url(r'^generate_report/$', views.generate_report, name='generate_report'),

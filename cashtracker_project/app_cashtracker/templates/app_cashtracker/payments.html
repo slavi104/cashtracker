@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Payments - CashTracker{% endblock %}
 {% block content %}
+{% load staticfiles %}
 <div class="login-form">
   <form id="payments_select_form"  action="/app_cashtracker/payments/" method="post">
     {% csrf_token %}
@@ -65,6 +66,7 @@
         {% endif %}
         <th>Category</th>
         <th class="payment_value_holder">Value</th>
+        <th style="width:17%;">Action</th>
       </thead>
       <tbody>
         {% if payments %}
@@ -73,6 +75,11 @@
                   <td>{{ payment.date_time }}</td>
                   <td>{{ payment.category.name }}</td>
                   <td class="payment_value_holder">{{ payment.value }}{{ payment.currency }}</td>
+                  <td>
+                    <span style="margin-left: 10%;" class="delete-button-holder">
+                      <img id="payment_{{ payment.id }}" data-id="{{ payment.id }}" data-toggle="modal" data-target="#delete_modal" class="action_buttons delete" src="{% static 'app_cashtracker/images/delete.png' %}">
+                    </span>
+                  </td>
                 </tr>
             {% endfor %}
         {% endif %}

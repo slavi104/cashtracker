@@ -301,8 +301,14 @@ table#payments_table {
   color: #7FA833;
 }
 
+#payments_table > tbody > tr > td {
+  padding-bottom: 2%;
+  padding-top: 2%;
+}
+
 .payment_value_holder{
   text-align: right;
+  padding-right: 5%;
 }
 
 .action_buttons{

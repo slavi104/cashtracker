@@ -508,6 +508,28 @@ def delete_report(request):
             result['success'] = 1
     except Exception:
         result['success'] = 0
-        result['message'] = 'Error in delete category'
+        result['message'] = 'Error in delete report'
+    
+    return HttpResponse(json.dumps(result, separators=(',',':')))
+
+
+def delete_payment(request):
+
+    user_id = request.session.get('user_id', False)
+
+    if not user_id:
+        return HttpResponseRedirect(reverse('app_cashtracker:login'))
+
+    params = request.POST
+    result = {}
+    try:
+        if int(params['payment_id']) > 0:
+            payment = get_object_or_404(Payment, id=int(params['payment_id']))
+            payment.is_active = 0
+            payment.save()
+            result['success'] = 1
+    except Exception:
+        result['success'] = 0
+        result['message'] = 'Error in delete payment'
     
     return HttpResponse(json.dumps(result, separators=(',',':')))
