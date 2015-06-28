@@ -161,7 +161,9 @@ def home(request):
         'logged_user': user,
         'categories': categories,
         'subcategories': json.dumps(subcategories),
-        'date_time': timezone.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'date_time': (timezone.now() + timedelta(hours=3)).strftime(
+            '%Y-%m-%d %H:%M:%S'
+        ),
         'currency': user.currency
     })
 
@@ -406,9 +408,10 @@ def payments(request):
     # convert all values to choosen currency
     list(map(lambda p: p.convert_currency(payments_curr), payments))
 
+    now = timezone.now() + timedelta(hours=3)
     context = RequestContext(request, {
         'logged_user': logged_user,
-        'date_time': timezone.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'date_time': now.strftime('%Y-%m-%d %H:%M:%S'),
         'payments': payments,
         'payments_for': payments_for,
         'categories': categories,
@@ -433,13 +436,14 @@ def generate_report(request):
     payments_curr = params.get('currency', user.currency)
     payments_cat = params.get('category', 0)
 
+    now = timezone.now() + timedelta(hours=3)
     report = Report()
     report.user = user
-    report.created = timezone.now().strftime('%Y-%m-%d %H:%M:%S')
+    report.created = now.strftime('%Y-%m-%d %H:%M:%S')
     report.report_type = payments_for
-    report.report_date = timezone.now().strftime('%Y-%m-%d %H:%M:%S')
+    report.report_date = now.strftime('%Y-%m-%d %H:%M:%S')
     report.start_date = take_date(payments_for)
-    report.end_date = timezone.now().strftime('%Y-%m-%d %H:%M:%S')
+    report.end_date = now.strftime('%Y-%m-%d %H:%M:%S')
     report.currency = payments_curr
     report.is_active = 1
     report.save()

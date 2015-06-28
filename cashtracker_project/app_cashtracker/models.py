@@ -28,9 +28,10 @@ class User(models.Model):
     is_active = models.BooleanField(default=True)
 
     def register(self, params):
+        now = timezone.now() + timedelta(hours=3)
         self.email = params['email']
         self.password = hash_password(params['password_1'])
-        self.created = timezone.now().strftime('%Y-%m-%d %H:%M:%S')
+        self.created = now.strftime('%Y-%m-%d %H:%M:%S')
         self.save()
 
     def __str__(self):
@@ -297,8 +298,8 @@ class Report(models.Model):
         # pie cahrt for categories
         pc_cat = Pie()
         pc_cat.x = 0
-        pc_cat.width = 180
-        pc_cat.height = 180
+        pc_cat.width = 160
+        pc_cat.height = 160
         pc_cat.data = []
         pc_cat.labels = []
         pc_cat.sideLabels =1
@@ -306,8 +307,8 @@ class Report(models.Model):
         # pie chart for subcategories
         pc_subcat = Pie()
         pc_subcat.x = 250
-        pc_subcat.width = 180
-        pc_subcat.height = 180
+        pc_subcat.width = 160
+        pc_subcat.height = 160
         pc_subcat.data = []
         pc_subcat.labels = []
         pc_subcat.sideLabels =1
@@ -356,8 +357,8 @@ class Report(models.Model):
                     pc_category.x = 250
                     float_left = True
 
-                pc_category.width = 180
-                pc_category.height = 180
+                pc_category.width = 160
+                pc_category.height = 160
                 pc_category.data = []
                 pc_category.labels = []
                 pc_category.sideLabels =1
@@ -388,8 +389,6 @@ class Report(models.Model):
                     last_category = category
                     d_pie_categories = Drawing(350, 240)
                     d_pie_categories.add(pc_category)
-
-
 
 
         if len(lc_data) == 0:
