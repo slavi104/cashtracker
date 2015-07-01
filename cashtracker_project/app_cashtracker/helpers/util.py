@@ -6,7 +6,7 @@ from datetime import timedelta
 from decimal import *
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas 
+from reportlab.pdfgen import canvas
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import Paragraph, SimpleDocTemplate
@@ -21,9 +21,11 @@ from django.utils import timezone
 import uuid
 import hashlib
 
+
 def currency_converter(curr_from, curr_to, value_input):
+
     basepath = os.path.dirname(__file__)
-    now = timezone.now()# + timedelta(hours=3)
+    now = timezone.now()  # + timedelta(hours=3)
     file_name = "{}.json".format(now.strftime('%Y_%m_%d'))
     rel_filepath = os.path.join(basepath, "..", "tmp", file_name)
     abs_filepath = os.path.abspath(rel_filepath)
@@ -45,20 +47,22 @@ def currency_converter(curr_from, curr_to, value_input):
     return "{0:.2f}".format(result)
 
 
-
 def hash_password(password):
     # uuid is used to generate a random number
     salt = uuid.uuid4().hex
-    return hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
+    password = hashlib.sha256(salt.encode() + password.encode())
+    return password.hexdigest() + ':' + salt
 
 
 def check_password(hashed_password, user_password):
     password, salt = hashed_password.split(':')
-    return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
+    return password == hashlib.sha256(
+        salt.encode() + user_password.encode()
+    ).hexdigest()
 
 
 def take_date(srting_repr):
-    now = timezone.now()# + timedelta(hours=3)
+    now = timezone.now()  # + timedelta(hours=3)
     calc_functions = {
         'today': now - timedelta(hours=24),
         'week': now - timedelta(days=7),

@@ -17,7 +17,8 @@ from app_cashtracker.models import Category
 from app_cashtracker.models import Subcategory
 
 PDFS_PATH = "./app_cashtracker/static/app_cashtracker/reports/"
-# PAYMENT
+
+
 class Payment(models.Model):
     value = models.DecimalField(default=0.000, max_digits=19, decimal_places=3)
     currency = models.CharField(max_length=3, default="BGN")
@@ -47,7 +48,7 @@ class Payment(models.Model):
         if payments_cat and payments_cat is not '0':
 
             payments = Payment.objects.filter(
-                user_id=logged_user.id, 
+                user_id=logged_user.id,
                 is_active=1,
                 date_time__gt=payments_from.strftime('%Y-%m-%d %H:%M:%S'),
                 category=get_object_or_404(Category, id=payments_cat)
@@ -56,26 +57,30 @@ class Payment(models.Model):
         else:
 
             payments = Payment.objects.filter(
-                user_id=logged_user.id, 
+                user_id=logged_user.id,
                 is_active=1,
                 date_time__gt=payments_from.strftime('%Y-%m-%d %H:%M:%S')
             )
 
         return payments
 
-
     def generate_fake_payments(user, number_payments=100):
 
         for payment_no in xrange(1, number_payments):
             payment = Payment()
-            payment.value = random.randint(0, 80)+random.randint(0,100)/100
-            payment.currency = random.choice(['BGN','EUR','USD','JPY','GBP'])
+            payment.value = random.randint(0, 80) + random.randint(0, 100)/100
+            payment.currency = random.choice(
+                ['BGN', 'EUR', 'USD', 'JPY', 'GBP']
+            )
 
             payment.category = random.choice(
                 Category.objects.filter(user=user, is_active=1)
             )
             payment.subcategory = random.choice(
-                Subcategory.objects.filter(category=payment.category, is_active=1)
+                Subcategory.objects.filter(
+                    category=payment.category,
+                    is_active=1
+                )
             )
 
             # get random date and time from 1/1/2014 to current timestamp

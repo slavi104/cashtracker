@@ -1,5 +1,6 @@
 from app_cashtracker.views.General import *
 
+
 def edit_profile(request):
 
     user_id = request.session.get('user_id', False)
@@ -52,6 +53,6 @@ def edit_profile_action(request):
         },
         'logged_user': get_object_or_404(User, id=user_id)
     })
-    
+
     template = loader.get_template('app_cashtracker/edit_profile.html')
     return HttpResponse(template.render(context))

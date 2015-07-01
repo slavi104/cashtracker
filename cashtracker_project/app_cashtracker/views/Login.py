@@ -1,5 +1,6 @@
 from app_cashtracker.views.General import *
 
+
 def login(request):
     # if this user is already logged so redirect to home page
     user_id = request.session.get('user_id', False)
@@ -23,7 +24,7 @@ def login_action(request):
         else:
             request.session['user_id'] = user.id
             if request.POST.get('remember_me', False) != 'on':
-                request.session.set_expiry(0) # one week
+                request.session.set_expiry(0)  # one week
 
     except Exception:
         error = True
@@ -49,5 +50,5 @@ def logout(request):
     user_id = request.session.get('user_id', False)
     if user_id:
         request.session.clear()
-    
+
     return HttpResponseRedirect(reverse('app_cashtracker:login'))

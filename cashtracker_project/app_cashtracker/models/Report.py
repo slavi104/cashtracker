@@ -12,8 +12,16 @@ from app_cashtracker.helpers.util import *
 import random
 from collections import OrderedDict
 
+from app_cashtracker.models.User import User
+from app_cashtracker.models.Payment import Payment
+from app_cashtracker.models.Category import Category
+from app_cashtracker.models.Subcategory import Subcategory
+from app_cashtracker.models.ReportHasPayments import ReportHasPayments
+from app_cashtracker.models.ReportHasCategories import ReportHasCategories
+
 PDFS_PATH = "./app_cashtracker/static/app_cashtracker/reports/"
-# REPORT
+
+
 class Report(models.Model):
     user = models.ForeignKey('User')
     created = models.DateTimeField('date created')
@@ -26,36 +34,48 @@ class Report(models.Model):
     is_active = models.BooleanField(default=True)
 
     def generate_report_pdf(self):
-    
+
         styles = getSampleStyleSheet()
         styleN = styles['Normal']
         styleH = styles['Heading1']
-        styleH.alignment = 1;
+        styleH.alignment = 1
 
         # container for the 'Flowable' objects
         elements = []
 
         elements.append(
             Paragraph(
-                "<u><font color=green>PAYMENTS REPORT</font></u><br/>by CashTracker™<br/>",
+                "<u><font color=green>PAYMENTS REPORT</font></u><br/>",
                 styleH)
             )
 
         elements.append(
             Paragraph(
-                "<font color=green>Payments from: </font><b>{}</b>".format(self.report_type.title()),
+                "by CashTracker™<br/>",
+                styleH)
+            )
+
+        elements.append(
+            Paragraph(
+                "<font color=green>Payments from: </font><b>{}</b>".format(
+                    self.report_type.title()
+                ),
                 styleN)
             )
 
         elements.append(
             Paragraph(
-                "<font color=green>Currency: </font><b>{}</b>".format(self.currency),
+                "<font color=green>Currency: </font><b>{}</b>".format(
+                    self.currency
+                ),
                 styleN)
             )
 
         elements.append(
             Paragraph(
-                "<font color=green>Categories: </font><b>{}</b>".format(self.category_names()),
+                "<font color=green>Categories: </font><b>{}</b>".format(
+                    self.category_names()
+                ),
                 styleN)
             )
 
@@ -68,10 +88,10 @@ class Report(models.Model):
 
         payments_table = [[
          'Date',
-         'Name', 
-         'Category', 
-         'Subcategory', 
-         'Comment', 
+         'Name',
+         'Category',
+         'Subcategory',
+         'Comment',
          'Value'
          ]]
 
@@ -88,10 +108,10 @@ class Report(models.Model):
 
             # add data for all payments
             payment_data.append(payment.date_time)
-            payment_data.append(textwrap.fill(payment.name,20))
+            payment_data.append(textwrap.fill(payment.name, 20))
             payment_data.append(payment.category)
             payment_data.append(payment.subcategory)
-            payment_data.append(textwrap.fill(payment.comment,25))
+            payment_data.append(textwrap.fill(payment.comment, 25))
             payment_data.append(payment.value)
 
             # collect statistics data
@@ -118,23 +138,23 @@ class Report(models.Model):
 
             # stats in time
             if self.report_type == 'month':
-                date_time_key = 'date_time_{}'.format(orig_date.strftime('%U'))
+                date_key = 'date_time_{}'.format(orig_date.strftime('%U'))
             if self.report_type == 'week':
-                date_time_key = 'date_time_{}'.format(orig_date.strftime('%a'))
+                date_key = 'date_time_{}'.format(orig_date.strftime('%a'))
             elif self.report_type == 'year':
-                date_time_key = 'date_time_{}'.format(orig_date.strftime('%b'))
+                date_key = 'date_time_{}'.format(orig_date.strftime('%b'))
             elif self.report_type == 'beginning':
-                date_time_key = 'date_time_{}'.format(orig_date.strftime('%Y'))
+                date_key = 'date_time_{}'.format(orig_date.strftime('%Y'))
             elif self.report_type == 'today':
-                date_time_key = 'date_time_{}'.format(orig_date.strftime('%H:%M'))
+                date_key = 'date_time_{}'.format(orig_date.strftime('%H:%M'))
 
-            if payments_stat_data.get(date_time_key, 0):
-                payments_stat_data[date_time_key] += p_value
+            if payments_stat_data.get(date_key, 0):
+                payments_stat_data[date_key] += p_value
             else:
-                payments_stat_data[date_time_key] = p_value
+                payments_stat_data[date_key] = p_value
 
             payments_table.append(payment_data)
-        
+
         elements.append(
             Paragraph(
                 "<font color=green>Total: </font><b>{}{}</b><br/><br/>".format(
@@ -145,11 +165,11 @@ class Report(models.Model):
             )
 
         # TABLE
-        t=Table(payments_table, colWidths=(None, 110, None, None, 150, 50))
+        t = Table(payments_table, colWidths=(None, 110, None, None, 150, 50))
         t.setStyle(TableStyle([
-            ('GRID', (0,0), (-1,-1), 0.25, colors.green),
-            ('ALIGN', (5,1), (-1,-1), 'RIGHT'),
-            ('TEXTCOLOR',(0,0),(-1,0), colors.green)
+            ('GRID', (0, 0), (-1, -1), 0.25, colors.green),
+            ('ALIGN', (5, 1), (-1, -1), 'RIGHT'),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.green)
         ]))
 
         # add table to pdf
@@ -170,7 +190,7 @@ class Report(models.Model):
         pc_cat.height = 160
         pc_cat.data = []
         pc_cat.labels = []
-        pc_cat.sideLabels =1
+        pc_cat.sideLabels = 1
 
         # pie chart for subcategories
         pc_subcat = Pie()
@@ -179,12 +199,12 @@ class Report(models.Model):
         pc_subcat.height = 160
         pc_subcat.data = []
         pc_subcat.labels = []
-        pc_subcat.sideLabels =1
+        pc_subcat.sideLabels = 1
         lc_data = []
         cat_names = []
 
         for stat, value in payments_stat_data.items():
-            stat_vars = stat.split('_');
+            stat_vars = stat.split('_')
             if stat_vars[1] == 'category':
                 pc_cat.data.append(float(value))
                 pc_cat.labels.append(
@@ -203,7 +223,9 @@ class Report(models.Model):
         if len(pc_cat.labels) > 1:
             elements.append(
                 Paragraph(
-                    "<u><b><font color=green>Pie charts for categories and subcategories.</font></b></u>",
+                    "<u><b><font color=green>"
+                    "Pie charts for categories and subcategories."
+                    "</font></b></u>",
                     styleN)
                 )
             d_pie = Drawing(350, 240)
@@ -229,10 +251,10 @@ class Report(models.Model):
             pc_category.height = 160
             pc_category.data = []
             pc_category.labels = []
-            pc_category.sideLabels =1
+            pc_category.sideLabels = 1
 
             subcategories = Subcategory.objects.filter(category=category)
-            
+
             for sc_id in list(map(lambda sc: sc.id, subcategories)):
                 # stats for subcategories
                 subcategory_key = 'all_subcategory_{}'.format(sc_id)
@@ -244,14 +266,18 @@ class Report(models.Model):
                         get_object_or_404(Subcategory, id=sc_id)
                     )
 
-            if counter % 2 == 0 :
+            if counter % 2 == 0:
                 d_pie_categories.add(pc_category)
 
-                if len(pc_cat.labels) % 2 == 0 :
+                if len(pc_cat.labels) % 2 == 0:
                     elements.append(
                         Paragraph(
-                            "<br/><br/><br/><u><b><font color=green>Pie chart for {} and {}.</font></b></u>".format(
-                                last_category, category),
+                            "<br/><br/><br/><u><b><font color=green>"
+                            "Pie chart for {} and {}."
+                            "</font></b></u>".format(
+                                last_category,
+                                category
+                            ),
                             styleN)
                         )
                     elements.append(d_pie_categories)
@@ -260,22 +286,24 @@ class Report(models.Model):
                 d_pie_categories = Drawing(350, 240)
                 d_pie_categories.add(pc_category)
 
-                if len(pc_cat.labels) % 2 != 0 :
+                if len(pc_cat.labels) % 2 != 0:
                     elements.append(
                         Paragraph(
-                            "<br/><br/><br/><u><b><font color=green>Pie chart for {}.</font></b></u>".format(
-                                category),
+                            "<br/><br/><br/><u><b><font color=green>"
+                            "Pie chart for {}."
+                            "</font></b></u>".format(category),
                             styleN)
                         )
                     elements.append(d_pie_categories)
-
 
         if len(lc_data) == 0:
             return self
 
         elements.append(
             Paragraph(
-                "<br/><br/><br/><br/><br/><br/><br/><u><b><font color=green>Line Chart for payment amounts in time.</font></b></u>",
+                "<br/><br/><br/><br/><br/><br/><br/><u><b><font color=green>"
+                "Line Chart for payment amounts in time."
+                "</font></b></u>",
                 styleN)
             )
 
@@ -304,7 +332,6 @@ class Report(models.Model):
         doc.build(elements)
         return self
 
-
     def category_names(self):
         rhc = ReportHasCategories.objects.filter(report=self)
         names = ', '.join(list(map(lambda r: r.category.name, rhc)))
@@ -313,13 +340,11 @@ class Report(models.Model):
         else:
             return names
 
-
     def add_category(self, category):
         report_category = ReportHasCategories()
         report_category.report = self
         report_category.category = category
         report_category.save()
-
 
     def add_payment(self, payment):
         report_payment = ReportHasPayments()
@@ -327,28 +352,24 @@ class Report(models.Model):
         report_payment.payment = payment
         report_payment.save()
 
-
     def fetch_payments(self):
         rhp = ReportHasPayments.objects.filter(report=self)
         payments = list(map(lambda r: r.payment, rhp))
         return sorted(payments, key=lambda p: p.date_time, reverse=False)
 
-
     def fetch_reports(user):
         reports = Report.objects.filter(
-            user=user, 
+            user=user,
             is_active=1).order_by('-created')
         return list(map(lambda r: r.parse_date(), reports))
-
 
     def parse_date(self):
         self.created = self.created.strftime('%d/%m/%Y')
         return self
 
-
     def __str__(self):
         return 'Report_from_{}_in_{}_({})'.format(
-            self.report_type, 
-            self.currency, 
+            self.report_type,
+            self.currency,
             self.id
         )

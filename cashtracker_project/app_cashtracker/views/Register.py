@@ -1,5 +1,6 @@
 from app_cashtracker.views.General import *
 
+
 def register(request):
     # if this user is already logged so redirect to home page
     user_id = request.session.get('user_id', False)
@@ -48,6 +49,6 @@ def register_action(request):
             'existing_user': existing_user
         },
     })
-    
+
     template = loader.get_template('app_cashtracker/register.html')
     return HttpResponse(template.render(context))

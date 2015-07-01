@@ -1,5 +1,6 @@
 from app_cashtracker.views.General import *
 
+
 def edit_categories(request):
 
     user_id = request.session.get('user_id', False)
@@ -44,8 +45,10 @@ def add_edit_category(request, category_id=0):
 
     if category:
         try:
-            subcategories = Subcategory.objects.filter(category_id=category.id,
-                is_active=1)
+            subcategories = Subcategory.objects.filter(
+                category_id=category.id,
+                is_active=1
+            )
         except Exception:
             other_error = True
         pass
@@ -58,7 +61,7 @@ def add_edit_category(request, category_id=0):
         'category': category,
         'subcategories': subcategories
     })
-    
+
     template = loader.get_template('app_cashtracker/add_edit_category.html')
     return HttpResponse(template.render(context))
 
@@ -72,7 +75,7 @@ def add_edit_category_action(request):
     if not user_id:
         return HttpResponseRedirect(reverse('app_cashtracker:login'))
 
-    if params['cat_id'] is '': # new category
+    if params['cat_id'] is '':  # new category
         try:
             category = Category()
         except Exception:
@@ -96,7 +99,7 @@ def add_edit_category_action(request):
             if params.dict().get('sub_{}'.format(subcategory.id), False):
                 subcategory.name = params['sub_{}'.format(subcategory.id)]
                 print(subcategory.name)
-            else: # delete subcategory
+            else:  # delete subcategory
                 subcategory.is_active = 0
             subcategory.save()
 
@@ -125,7 +128,5 @@ def delete_category_action(request, category_id=0):
             category.save()
     except Exception:
         print('Error in delete category')
-    
+
     return HttpResponseRedirect(reverse('app_cashtracker:edit_categories'))
-
-

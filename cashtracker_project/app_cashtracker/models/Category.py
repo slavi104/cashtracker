@@ -1,7 +1,8 @@
 from django.db import models
 
 from app_cashtracker.models import User
-# CATEGORY
+
+
 class Category(models.Model):
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=1000)

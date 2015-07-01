@@ -1,5 +1,6 @@
 from app_cashtracker.views.General import *
 
+
 def home(request):
 
     user_id = request.session.get('user_id', False)
@@ -13,7 +14,7 @@ def home(request):
     for category in categories:
         subcategories[category.id] = {}
         category_subcategories = Subcategory.objects.filter(
-            category_id=category.id, 
+            category_id=category.id,
             is_active=1
         )
         for subcategory in category_subcategories:
@@ -35,7 +36,7 @@ def home(request):
 
 
 def add_payment(request):
-    
+
     user_id = request.session.get('user_id', False)
 
     if not user_id:
@@ -46,7 +47,7 @@ def add_payment(request):
     payment.value = params['value']
     payment.currency = params['currency']
     payment.category = get_object_or_404(Category, id=params['category'])
-    payment.subcategory = get_object_or_404(Subcategory, 
+    payment.subcategory = get_object_or_404(Subcategory,
                                             id=params['subcategory'])
     payment.date_time = params['date_time']
     payment.name = params['name']
@@ -65,7 +66,7 @@ def payments(request):
 
     if not user_id:
         return HttpResponseRedirect(reverse('app_cashtracker:login'))
-    
+
     categories = Category.objects.filter(user_id=user_id, is_active=1)
     logged_user = get_object_or_404(User, id=user_id)
     payments_for = params.get('payments_for', 'today')
@@ -73,8 +74,8 @@ def payments(request):
     payments_cat = params.get('category', 0)
 
     payments = Payment.fetch_payments(
-        payments_for, 
-        payments_cat, 
+        payments_for,
+        payments_cat,
         payments_curr,
         logged_user
     )
@@ -85,7 +86,7 @@ def payments(request):
     # convert all values to choosen currency
     list(map(lambda p: p.convert_currency(payments_curr), payments))
 
-    now = timezone.now()# + timedelta(hours=3)
+    now = timezone.now()  # + timedelta(hours=3)
     context = RequestContext(request, {
         'logged_user': logged_user,
         'date_time': now.strftime('%Y-%m-%d %H:%M:%S'),
@@ -95,7 +96,7 @@ def payments(request):
         'payments_cat': payments_cat,
         'payments_curr': payments_curr
     })
-    
+
     template = loader.get_template('app_cashtracker/payments.html')
     return HttpResponse(template.render(context))
 
@@ -118,11 +119,11 @@ def delete_payment(request):
     except Exception:
         result['success'] = 0
         result['message'] = 'Error in delete payment'
-    
-    return HttpResponse(json.dumps(result, separators=(',',':')))
+
+    return HttpResponse(json.dumps(result, separators=(',', ':')))
 
 
-def generate_fake_payments(request, number_of_payments = 100):
+def generate_fake_payments(request, number_of_payments=100):
     user_id = request.session.get('user_id', False)
 
     if not user_id:
@@ -130,7 +131,7 @@ def generate_fake_payments(request, number_of_payments = 100):
 
     # WARNING THIS FUNCTION GENERATE FAKE PAYMENTS
     Payment.generate_fake_payments(
-        get_object_or_404(User, id=user_id), 
+        get_object_or_404(User, id=user_id),
         int(number_of_payments)
     )
 

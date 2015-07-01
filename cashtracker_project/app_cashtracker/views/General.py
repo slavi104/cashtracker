@@ -23,6 +23,7 @@ from app_cashtracker.models.ReportHasSubcategories import ReportHasSubcategories
 # util functions
 from app_cashtracker.helpers.util import *
 
+
 def index(request):
     template = loader.get_template('app_cashtracker/index.html')
     return HttpResponse(template.render())

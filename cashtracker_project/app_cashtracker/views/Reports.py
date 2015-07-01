@@ -1,5 +1,6 @@
 from app_cashtracker.views.General import *
 
+
 def generate_report(request):
 
     user_id = request.session.get('user_id', False)
@@ -32,8 +33,8 @@ def generate_report(request):
         report.add_category(get_object_or_404(Category, id=payments_cat))
 
     payments = Payment.fetch_payments(
-        payments_for, 
-        payments_cat, 
+        payments_for,
+        payments_cat,
         payments_curr,
         user
     )
@@ -42,7 +43,7 @@ def generate_report(request):
     for payment in payments:
         report.add_payment(payment)
 
-    report.generate_report_pdf();
+    report.generate_report_pdf()
 
     return HttpResponseRedirect(reverse('app_cashtracker:reports'))
 
@@ -54,14 +55,14 @@ def reports(request):
 
     if not user_id:
         return HttpResponseRedirect(reverse('app_cashtracker:login'))
-    
+
     user = get_object_or_404(User, id=user_id)
     context = RequestContext(request, {
         'logged_user': user,
         'reports': Report.fetch_reports(user)
 
     })
-    
+
     template = loader.get_template('app_cashtracker/reports.html')
     return HttpResponse(template.render(context))
 
@@ -84,5 +85,5 @@ def delete_report(request):
     except Exception:
         result['success'] = 0
         result['message'] = 'Error in delete report'
-    
-    return HttpResponse(json.dumps(result, separators=(',',':')))
+
+    return HttpResponse(json.dumps(result, separators=(',', ':')))

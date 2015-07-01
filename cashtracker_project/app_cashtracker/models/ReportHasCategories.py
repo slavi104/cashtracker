@@ -1,8 +1,9 @@
 from django.db import models
 
-from app_cashtracker.models import Report
-from app_cashtracker.models import Category
-# REPORT HAS CATEGORIES
+# from app_cashtracker.models import Report
+# from app_cashtracker.models import Category
+
+
 class ReportHasCategories(models.Model):
     report = models.ForeignKey('Report')
     category = models.ForeignKey('Category')
