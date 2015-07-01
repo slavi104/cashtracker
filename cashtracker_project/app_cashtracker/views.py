@@ -10,12 +10,14 @@ from django.utils import timezone
 from datetime import datetime
 
 # models
-from .models import User
-from .models import Category
-from .models import Subcategory
-from .models import Payment
-from .models import Report
-from .models import ReportHasCategories
+from .models.User import User
+from .models.Payment import Payment
+from .models.Category import Category
+from .models.Subcategory import Subcategory
+from .models.Report import Report
+from .models.ReportHasPayments import ReportHasPayments
+from .models.ReportHasCategories import ReportHasCategories
+from .models.ReportHasSubcategories import ReportHasSubcategories
 
 from .helpers.util import *
 
