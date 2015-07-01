@@ -102,11 +102,11 @@ i {
 
 a {
     background: transparent;
-    color: #7FA833;
+    /*color: #7FA833;*/
 }
 
 label.general-label{
-    color: #7FA833;
+   /* color: #7FA833;*/
     width: 100%;
 }
 
@@ -298,7 +298,7 @@ span.one-row-two-buttons {
 table#payments_table {
   width: 100%;
   font-size: 1.8em;
-  color: #7FA833;
+  /*color: #7FA833;*/
 }
 
 #payments_table > tbody > tr > td {
@@ -319,7 +319,7 @@ table#payments_table {
 table#reports_table {
   width: 100%;
   font-size: 1.8em;
-  color: #7FA833;
+  /*color: #7FA833;*/
 }
 
 #reports_table > tbody > tr > td {
