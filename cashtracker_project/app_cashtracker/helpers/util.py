@@ -61,8 +61,3 @@ def take_date(srting_repr):
         'beginning': now - timedelta(days=3650)
     }
     return calc_functions.get(srting_repr, now)
-
-
-if __name__ == "__main__":
-    import sys
-    fib(int(sys.argv[1]))
