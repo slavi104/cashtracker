@@ -25,4 +25,3 @@ class UtilTests(TestCase):
         self.assertEqual(take_date('month'), now - timedelta(days=32))
         self.assertEqual(take_date('year'), now - timedelta(days=365))
         self.assertEqual(take_date('beginning'), now - timedelta(days=3650))
-        
