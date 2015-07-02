@@ -1,8 +1,5 @@
 from django.db import models
 
-from app_cashtracker.models import Report
-from app_cashtracker.models import Subcategory
-
 
 class ReportHasSubcategories(models.Model):
     report = models.ForeignKey('Report')

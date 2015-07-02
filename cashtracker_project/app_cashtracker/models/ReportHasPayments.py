@@ -1,8 +1,5 @@
 from django.db import models
 
-# from app_cashtracker.models import Report
-# from app_cashtracker.models import Payment
-
 
 class ReportHasPayments(models.Model):
     report = models.ForeignKey('Report')

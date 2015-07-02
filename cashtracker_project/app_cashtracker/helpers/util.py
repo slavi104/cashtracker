@@ -4,16 +4,6 @@ import os
 from datetime import datetime
 from datetime import timedelta
 from decimal import *
-from reportlab.lib import colors
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
-from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.platypus import Paragraph, SimpleDocTemplate
-from reportlab.graphics.shapes import Drawing
-from reportlab.graphics.charts.piecharts import Pie
-from reportlab.graphics.charts.linecharts import HorizontalLineChart
-from reportlab.platypus.flowables import PageBreak
 from django.utils import timezone
 
 

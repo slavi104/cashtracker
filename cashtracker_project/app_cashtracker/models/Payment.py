@@ -12,9 +12,9 @@ from app_cashtracker.helpers.util import *
 import random
 from collections import OrderedDict
 
-from app_cashtracker.models import User
-from app_cashtracker.models import Category
-from app_cashtracker.models import Subcategory
+from app_cashtracker.models.User import User
+from app_cashtracker.models.Category import Category
+from app_cashtracker.models.Subcategory import Subcategory
 
 PDFS_PATH = "./app_cashtracker/static/app_cashtracker/reports/"
 
