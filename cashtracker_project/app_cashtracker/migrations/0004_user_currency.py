@@ -7,7 +7,10 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app_cashtracker', '0003_category_report_reporthascategories_reporthaspayments_reporthassubcategories_subcategory'),
+        (
+            'app_cashtracker',
+            '0003_category_report_reporthascategories_'
+            'reporthaspayments_reporthassubcategories_subcategory'),
     ]
 
     operations = [

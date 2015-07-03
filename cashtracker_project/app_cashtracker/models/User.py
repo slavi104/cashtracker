@@ -27,4 +27,4 @@ class User(models.Model):
         self.save()
 
     def __str__(self):
-        return self.user_name
+        return self.first_name + ' ' + self.last_name

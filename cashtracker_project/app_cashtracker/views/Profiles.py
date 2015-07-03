@@ -31,7 +31,8 @@ def edit_profile_action(request):
         other_error = True
         print('Error in editing profile')
 
-    if params['password_1'] == params['password_2'] and params['password_1'] != '':
+    if (params['password_1'] == params['password_2'] and
+            params['password_1'] != ''):
         user.password = hash_password(params['password_1'])
     elif params['password_1'] != params['password_2']:
         not_equal_passwords = True

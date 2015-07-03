@@ -13,7 +13,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='User',
             fields=[
-                ('id', models.AutoField(serialize=False, primary_key=True, auto_created=True, verbose_name='ID')),
+                (
+                    'id',
+                    models.AutoField(
+                        serialize=False,
+                        primary_key=True,
+                        auto_created=True,
+                        verbose_name='ID'
+                    )
+                ),
                 ('user_name', models.CharField(max_length=200)),
                 ('email', models.CharField(max_length=200)),
                 ('password', models.CharField(max_length=200)),

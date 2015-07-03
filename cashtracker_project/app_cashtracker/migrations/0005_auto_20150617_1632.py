@@ -102,7 +102,10 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='reporthassubcategories',
             name='subcategory',
-            field=models.ForeignKey(default=1, to='app_cashtracker.Subcategory'),
+            field=models.ForeignKey(
+                default=1,
+                to='app_cashtracker.Subcategory'
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
@@ -144,7 +147,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='payment',
             name='value',
-            field=models.DecimalField(max_digits=19, default=0.0, decimal_places=3),
+            field=models.DecimalField(
+                max_digits=19,
+                default=0.0,
+                decimal_places=3
+            ),
         ),
         migrations.AlterField(
             model_name='report',
@@ -164,6 +171,10 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='user',
             name='salary',
-            field=models.DecimalField(max_digits=19, default=0.0, decimal_places=3),
+            field=models.DecimalField(
+                max_digits=19,
+                default=0.0,
+                decimal_places=3
+            ),
         ),
     ]

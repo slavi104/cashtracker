@@ -14,12 +14,25 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Payment',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                (
+                    'id',
+                    models.AutoField(
+                        verbose_name='ID',
+                        serialize=False,
+                        auto_created=True,
+                        primary_key=True
+                    )
+                ),
                 ('value', models.FloatField(default=0.0)),
                 ('currency', models.CharField(default='BGN', max_length=3)),
                 ('category', models.IntegerField()),
                 ('subcategory', models.IntegerField()),
-                ('date_time', models.DateTimeField(verbose_name='date and time created')),
+                (
+                    'date_time',
+                    models.DateTimeField(
+                        verbose_name='date and time created'
+                    )
+                ),
                 ('name', models.CharField(max_length=255)),
                 ('comment', models.CharField(max_length=1000)),
                 ('user_id', models.IntegerField()),

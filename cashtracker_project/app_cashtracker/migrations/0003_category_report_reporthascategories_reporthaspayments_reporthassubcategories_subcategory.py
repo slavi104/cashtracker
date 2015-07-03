@@ -14,7 +14,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Category',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', auto_created=True, serialize=False, primary_key=True)),
+                (
+                    'id',
+                    models.AutoField(
+                        verbose_name='ID',
+                        auto_created=True,
+                        serialize=False,
+                        primary_key=True
+                    )
+                ),
                 ('name', models.CharField(max_length=255)),
                 ('description', models.CharField(max_length=1000)),
                 ('user_id', models.IntegerField()),
@@ -24,12 +32,30 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Report',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', auto_created=True, serialize=False, primary_key=True)),
+                (
+                    'id',
+                    models.AutoField(
+                        verbose_name='ID',
+                        auto_created=True,
+                        serialize=False,
+                        primary_key=True
+                    )
+                ),
                 ('user_id', models.IntegerField()),
                 ('created', models.DateTimeField(verbose_name='date created')),
                 ('report_type', models.CharField(max_length=255)),
-                ('report_date', models.DateTimeField(verbose_name='report date used for report_type')),
-                ('start_date', models.DateTimeField(verbose_name='start date')),
+                (
+                    'report_date',
+                    models.DateTimeField(
+                        verbose_name='report date used for report_type'
+                    )
+                ),
+                (
+                    'start_date',
+                    models.DateTimeField(
+                        verbose_name='start date'
+                    )
+                ),
                 ('end_date', models.DateTimeField(verbose_name='end date')),
                 ('currency', models.CharField(max_length=3, default='BGN')),
                 ('is_active', models.IntegerField(default=1)),
@@ -38,7 +64,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ReportHasCategories',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', auto_created=True, serialize=False, primary_key=True)),
+                (
+                    'id',
+                    models.AutoField(
+                        verbose_name='ID',
+                        auto_created=True,
+                        serialize=False,
+                        primary_key=True
+                    )
+                ),
                 ('report_id', models.IntegerField()),
                 ('category_id', models.IntegerField()),
             ],
@@ -46,7 +80,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ReportHasPayments',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', auto_created=True, serialize=False, primary_key=True)),
+                (
+                    'id',
+                    models.AutoField(
+                        verbose_name='ID',
+                        auto_created=True,
+                        serialize=False,
+                        primary_key=True
+                    )
+                ),
                 ('report_id', models.IntegerField()),
                 ('payment_id', models.IntegerField()),
             ],
@@ -54,7 +96,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ReportHasSubcategories',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', auto_created=True, serialize=False, primary_key=True)),
+                (
+                    'id',
+                    models.AutoField(
+                        verbose_name='ID',
+                        auto_created=True,
+                        serialize=False,
+                        primary_key=True
+                    )
+                ),
                 ('report_id', models.IntegerField()),
                 ('subcategory_id', models.IntegerField()),
             ],
@@ -62,7 +112,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Subcategory',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', auto_created=True, serialize=False, primary_key=True)),
+                (
+                    'id',
+                    models.AutoField(
+                        verbose_name='ID',
+                        auto_created=True,
+                        serialize=False,
+                        primary_key=True
+                    )
+                ),
                 ('name', models.CharField(max_length=255)),
                 ('category_id', models.IntegerField()),
                 ('is_active', models.IntegerField(default=1)),

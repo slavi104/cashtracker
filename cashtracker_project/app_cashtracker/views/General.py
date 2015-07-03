@@ -18,7 +18,7 @@ from app_cashtracker.models.Subcategory import Subcategory
 from app_cashtracker.models.Report import Report
 from app_cashtracker.models.ReportHasPayments import ReportHasPayments
 from app_cashtracker.models.ReportHasCategories import ReportHasCategories
-from app_cashtracker.models.ReportHasSubcategories import ReportHasSubcategories
+from app_cashtracker.models.ReportHasSubcategories import *
 
 # util functions
 from app_cashtracker.helpers.util import *

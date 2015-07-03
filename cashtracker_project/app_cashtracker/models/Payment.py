@@ -66,7 +66,7 @@ class Payment(models.Model):
 
     def generate_fake_payments(user, number_payments=100):
 
-        for payment_no in xrange(1, number_payments):
+        for payment_no in xrange(0, number_payments):
             payment = Payment()
             payment.value = random.randint(0, 80) + random.randint(0, 100)/100
             payment.currency = random.choice(
@@ -79,7 +79,7 @@ class Payment(models.Model):
             payment.subcategory = random.choice(
                 Subcategory.objects.filter(
                     category=payment.category,
-                    is_active=1
+                    is_active=True
                 )
             )
 

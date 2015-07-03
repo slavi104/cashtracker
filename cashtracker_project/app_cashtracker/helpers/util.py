@@ -58,6 +58,6 @@ def take_date(srting_repr):
         'week': now - timedelta(days=7),
         'month': now - timedelta(days=32),
         'year': now - timedelta(days=365),
-        'beginning': now - timedelta(days=3650)
+        'beginning': now - timedelta(days=36500)
     }
     return calc_functions.get(srting_repr, now)
