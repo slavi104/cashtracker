@@ -17,12 +17,42 @@ class CategoryTests(TestCase):
         category.description = ''
         category.user = user
         category.save()
-
         category_from_DB = get_object_or_404(Category, id=category.id)
-
         self.assertEqual(category, category_from_DB)
+
+    def test_saved_name(self):
+        user = User()
+        user.created = timezone.now().strftime('%Y-%m-%d %H:%M:%S')
+        user.save()
+        category = Category()
+        category.name = 'Test category'
+        category.user = user
+        category.save()
+        category_from_DB = get_object_or_404(Category, id=category.id)
         self.assertEqual(category.name, category_from_DB.name)
+
+    def test_saved_description(self):
+        user = User()
+        user.created = timezone.now().strftime('%Y-%m-%d %H:%M:%S')
+        user.save()
+        category = Category()
+        category.name = 'Test category'
+        category.user = user
+        category.description = ''
+        category.save()
+        category_from_DB = get_object_or_404(Category, id=category.id)
         self.assertEqual(category.description, category_from_DB.description)
+
+    def test_saved_user(self):
+        user = User()
+        user.created = timezone.now().strftime('%Y-%m-%d %H:%M:%S')
+        user.save()
+        category = Category()
+        category.name = 'Test category'
+        category.user = user
+        category.description = ''
+        category.save()
+        category_from_DB = get_object_or_404(Category, id=category.id)
         self.assertEqual(category.user, category_from_DB.user)
 
     def test_get_category_name_all(self):
@@ -34,7 +64,6 @@ class CategoryTests(TestCase):
         user.save()
         category = Category()
         category.name = 'Test category'
-        category.description = ''
         category.user = user
         category.save()
         self.assertEqual(

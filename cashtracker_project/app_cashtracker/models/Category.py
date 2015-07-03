@@ -1,4 +1,5 @@
 from django.db import models
+from django.shortcuts import get_object_or_404
 
 
 class Category(models.Model):
@@ -11,7 +12,7 @@ class Category(models.Model):
         if not int(category_id):
             return 'All'
         else:
-            return get_object_or_404(Category, id=category_id)
+            return get_object_or_404(Category, id=category_id).name
 
     def __str__(self):
         return self.name

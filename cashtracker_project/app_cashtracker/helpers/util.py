@@ -51,13 +51,18 @@ def check_password(hashed_password, user_password):
     ).hexdigest()
 
 
-def take_date(srting_repr):
-    now = timezone.now()  # + timedelta(hours=3)
+def take_date(srting_repr, timestamp=0):
+
+    if timestamp:
+        now = timestamp  # + timedelta(hours=3)
+    else:
+        now = timezone.now()  # + timedelta(hours=3)
+
     calc_functions = {
         'today': now - timedelta(hours=24),
         'week': now - timedelta(days=7),
         'month': now - timedelta(days=32),
         'year': now - timedelta(days=365),
-        'beginning': now - timedelta(days=36500)
+        'beginning': now - timedelta(days=1000)
     }
     return calc_functions.get(srting_repr, now)
