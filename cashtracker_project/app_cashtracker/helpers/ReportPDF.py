@@ -17,7 +17,7 @@ from django.shortcuts import get_object_or_404
 from app_cashtracker.models.Category import Category
 from app_cashtracker.models.Subcategory import Subcategory
 
-PDFS_PATH = "./app_cashtracker/static/app_cashtracker/reports/"
+PDFS_PATH = "/home/vagrant/cashtracker/cashtracker_project/app_cashtracker/static/app_cashtracker/reports/"
 
 
 class ReportPDF(object):
