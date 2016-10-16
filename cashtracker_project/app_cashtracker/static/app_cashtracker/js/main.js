@@ -81,8 +81,7 @@ App.paymentsScript = function(payments_for, payments_cat, payments_curr) {
                 type: 'post',
                 url: "/app_cashtracker/delete_payment/",
                 data: {
-                    payment_id: App.delete_item_id,
-                    csrfmiddlewaretoken: getCookie('csrftoken')
+                    payment_id: App.delete_item_id
                 },
                 dataType: 'json'
             }).done(function(data){
@@ -106,8 +105,7 @@ App.reportsScript = function() {
                 type: 'post',
                 url: "/app_cashtracker/delete_report/",
                 data: {
-                    report_id: App.delete_item_id,
-                    csrfmiddlewaretoken: getCookie('csrftoken')
+                    report_id: App.delete_item_id
                 },
                 dataType: 'json'
             }).done(function(data){
