@@ -2,7 +2,6 @@
 {% block title %}Edit profile - CashTracker{% endblock %}
 {% block content %}
 <form class="login-form"  action="/app_cashtracker/edit_profile_action/" method="post">
-  {% csrf_token %}
   <div class="form-group">
     <label for="inputEmail3" class="col-sm-12 control-label general-label login-label">First name:</label>
     <div class="col-sm-12">

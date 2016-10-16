@@ -2,7 +2,6 @@
 {% block title %}Home - CashTracker{% endblock %}
 {% block content %}
 <form class="login-form"  action="/app_cashtracker/add_payment/" method="post">
-  {% csrf_token %}
   <div class="form-group">
     <label for="inputEmail3" class="col-sm-12 control-label general-label login-label">Payment date and time:</label>
     <div class="col-sm-12">
